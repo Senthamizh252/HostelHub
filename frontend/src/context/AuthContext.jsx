@@ -8,6 +8,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (user?.role) {
+      document.documentElement.setAttribute('data-theme', user.role);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [user]);
+
+  useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem('token');
       if (token) {
