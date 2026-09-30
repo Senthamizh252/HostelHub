@@ -44,7 +44,7 @@ const DashboardLayout = () => {
   const navItems = getNavItems(user.role);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden text-slate-900">
+    <div className="flex h-screen bg-slate-50 overflow-hidden text-slate-900" data-theme={user.role?.toLowerCase() || 'student'}>
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -138,7 +138,10 @@ const DashboardLayout = () => {
                 <p className="text-sm font-semibold text-slate-700">{user.name || 'User'}</p>
                 <p className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--color-primary)' }}>{user.role}</p>
               </div>
-              <div className="h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <div 
+                className="h-10 w-10 flex items-center justify-center text-white font-bold text-lg shadow-sm rounded-md"
+                style={{ backgroundColor: 'var(--color-primary)' }}
+              >
                 {(user.name || user.role || 'U').charAt(0).toUpperCase()}
               </div>
             </div>

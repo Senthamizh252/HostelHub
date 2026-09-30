@@ -24,9 +24,9 @@ const Register = () => {
   };
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" data-theme={formData.role}>
       <div className="mb-6 text-center">
-        <h2 className="text-2xl font-bold text-slate-900">Create an account</h2>
+        <h2 className="text-2xl font-bold text-[var(--color-primary)]">Create an account</h2>
         <p className="text-slate-500 text-sm mt-1">Join HostelHub today</p>
       </div>
 
@@ -104,7 +104,8 @@ const Register = () => {
         <button 
           type="submit" 
           disabled={isLoading}
-          className="w-full flex items-center justify-center py-2.5 px-4 mt-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 transition-colors disabled:opacity-70 disabled:cursor-not-allowed group"
+          className="w-full flex items-center justify-center py-2.5 px-4 mt-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed group"
+          style={{ backgroundColor: 'var(--color-primary)' }}
         >
           {isLoading ? (
             <Loader2 className="animate-spin" size={18} />
@@ -118,7 +119,7 @@ const Register = () => {
       </form>
       <div className="mt-8 text-center text-sm text-slate-500">
         Already have an account?{' '}
-        <Link to="/login" className="font-semibold text-slate-900 hover:underline transition-all">
+        <Link to="/login" className="font-semibold hover:underline transition-all" style={{ color: 'var(--color-primary)' }}>
           Sign in
         </Link>
       </div>
