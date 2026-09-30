@@ -55,12 +55,16 @@ const DashboardLayout = () => {
 
       {/* Sidebar */}
       <aside className={twMerge(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col",
+        "fixed inset-y-0 left-0 z-50 w-64 shadow-xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      )}>
-        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-          <h2 className="text-2xl font-bold tracking-tight" style={{ color: 'var(--color-primary)' }}>HostelHub</h2>
-          <button className="lg:hidden text-slate-400 hover:text-slate-600" onClick={() => setIsSidebarOpen(false)}>
+      )} style={{ backgroundColor: 'var(--color-primary)' }}>
+        <div className="p-6 flex justify-between items-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
+          <h2 className="text-2xl font-bold tracking-tight text-white relative z-10 flex items-center gap-2">
+            <Building className="text-white" size={24} />
+            HostelHub
+          </h2>
+          <button className="lg:hidden text-white/70 hover:text-white" onClick={() => setIsSidebarOpen(false)}>
             <X size={24} />
           </button>
         </div>
@@ -78,22 +82,21 @@ const DashboardLayout = () => {
                 className={clsx(
                   "flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 group font-medium",
                   isActive 
-                    ? "text-white shadow-md shadow-primary/20"
-                    : "text-slate-600 hover:bg-slate-100/80"
+                    ? "text-white bg-white/20 shadow-sm"
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
                 )}
-                style={isActive ? { backgroundColor: 'var(--color-primary)' } : {}}
               >
-                <Icon size={20} className={clsx("transition-transform duration-200", isActive ? "" : "group-hover:scale-110", isActive ? "text-white" : "text-slate-400 group-hover:text-slate-600")} style={isActive ? { color: 'white' } : {}} />
+                <Icon size={20} className={clsx("transition-transform duration-200", isActive ? "" : "group-hover:scale-110", "text-white")} />
                 <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
         
-        <div className="p-4 border-t border-slate-100">
+        <div className="p-4">
           <button
             onClick={logout}
-            className="flex items-center w-full space-x-3 text-red-600 p-3 rounded-xl hover:bg-red-50 transition-colors duration-200 font-medium group"
+            className="flex items-center w-full space-x-3 text-white/70 p-3 rounded-xl hover:bg-white/10 hover:text-white transition-colors duration-200 font-medium group"
           >
             <LogOut size={20} className="group-hover:-translate-x-1 transition-transform duration-200" />
             <span>Logout</span>
