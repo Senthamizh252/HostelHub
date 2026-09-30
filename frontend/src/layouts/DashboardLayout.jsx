@@ -58,7 +58,7 @@ const DashboardLayout = () => {
         "fixed inset-y-0 left-0 z-50 w-64 shadow-xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
       )} style={{ backgroundColor: 'var(--color-primary)' }}>
-        <div className="p-6 flex justify-between items-center relative overflow-hidden">
+        <div className="h-16 px-6 flex justify-between items-center relative overflow-hidden shrink-0">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
           <h2 className="text-2xl font-bold tracking-tight text-white relative z-10 flex items-center gap-2">
             <Building className="text-white" size={24} />
@@ -69,7 +69,7 @@ const DashboardLayout = () => {
           </button>
         </div>
         
-        <nav className="p-4 space-y-1.5 flex-1 overflow-y-auto">
+        <nav className="p-4 space-y-1.5 flex-1 overflow-y-auto scrollbar-hide">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname.startsWith(item.path);
@@ -152,7 +152,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto scrollbar-hide">
           <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Outlet />
           </div>
