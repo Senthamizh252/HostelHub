@@ -7,6 +7,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/student/Dashboard';
+import StudentComplaints from './pages/student/Complaints';
 import WardenDashboard from './pages/warden/Dashboard';
 import AdminDashboard from './pages/admin/Dashboard';
 
@@ -34,6 +35,7 @@ function AppRoutes() {
       
       <Route element={<DashboardLayout />}>
         <Route path="/student/dashboard" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
+        <Route path="/student/complaints" element={<ProtectedRoute allowedRoles={['student']}><StudentComplaints /></ProtectedRoute>} />
         <Route path="/warden/dashboard" element={<ProtectedRoute allowedRoles={['warden']}><WardenDashboard /></ProtectedRoute>} />
         <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       </Route>
