@@ -325,6 +325,33 @@ const StudentDashboard = () => {
           </div>
         </div>
 
+        {/* Small Steps Graphic */}
+        <div className="bg-[#f4f7fe] rounded-2xl p-6 border border-blue-50/50 relative overflow-hidden mt-6 flex justify-between items-center h-32">
+          {/* Plant Illustration */}
+          <div className="relative z-10 flex items-end h-full w-12">
+            <div className="w-8 h-6 bg-blue-400 rounded-b-lg rounded-t-sm absolute bottom-0 left-2"></div>
+            <div className="w-1 h-12 bg-blue-500 absolute bottom-6 left-[22px]"></div>
+            <div className="w-4 h-4 bg-blue-500 rounded-full absolute bottom-12 left-2 rounded-tr-none transform -rotate-45"></div>
+            <div className="w-4 h-4 bg-blue-500 rounded-full absolute bottom-8 left-6 rounded-tl-none transform rotate-45"></div>
+            <div className="w-1.5 h-1.5 bg-blue-300 rounded-full absolute bottom-16 left-6"></div>
+            <div className="w-2 h-2 bg-blue-300 rounded-full absolute bottom-4 left-0"></div>
+          </div>
+          
+          <div className="flex-1 flex flex-col items-center justify-center -rotate-6 z-10">
+            <p className="text-blue-700 font-semibold text-sm leading-tight text-center">
+              Small steps<br/>towards a better<br/>tomorrow!
+            </p>
+          </div>
+          
+          <div className="text-blue-600 font-bold text-lg -rotate-12 z-10 mr-2">
+            ;)
+          </div>
+
+          {/* Decorative lines */}
+          <div className="absolute -bottom-2 -right-2 w-16 h-16 border-t border-l border-blue-300 rounded-tl-full opacity-50"></div>
+          <div className="absolute bottom-2 right-4 w-24 h-24 border-t border-blue-300 rounded-tl-full opacity-30 transform rotate-12"></div>
+        </div>
+
       </div>
     </div>
   );
