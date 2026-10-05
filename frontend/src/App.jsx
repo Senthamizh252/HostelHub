@@ -7,6 +7,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/student/Dashboard';
+import StudentRoom from './pages/student/Room';
 import StudentComplaints from './pages/student/Complaints';
 import StudentLeaves from './pages/student/Leaves';
 import WardenDashboard from './pages/warden/Dashboard';
@@ -36,6 +37,7 @@ function AppRoutes() {
       
       <Route element={<DashboardLayout />}>
         <Route path="/student/dashboard" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
+        <Route path="/student/room" element={<ProtectedRoute allowedRoles={['student']}><StudentRoom /></ProtectedRoute>} />
         <Route path="/student/complaints" element={<ProtectedRoute allowedRoles={['student']}><StudentComplaints /></ProtectedRoute>} />
         <Route path="/student/leaves" element={<ProtectedRoute allowedRoles={['student']}><StudentLeaves /></ProtectedRoute>} />
         <Route path="/warden/dashboard" element={<ProtectedRoute allowedRoles={['warden']}><WardenDashboard /></ProtectedRoute>} />
