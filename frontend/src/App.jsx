@@ -12,6 +12,7 @@ import StudentComplaints from './pages/student/Complaints';
 import StudentLeaves from './pages/student/Leaves';
 import StudentMenu from './pages/student/Menu';
 import StudentAnnouncements from './pages/student/Announcements';
+import StudentLostFound from './pages/student/LostFound';
 import WardenDashboard from './pages/warden/Dashboard';
 import AdminDashboard from './pages/admin/Dashboard';
 
@@ -44,6 +45,7 @@ function AppRoutes() {
         <Route path="/student/leaves" element={<ProtectedRoute allowedRoles={['student']}><StudentLeaves /></ProtectedRoute>} />
         <Route path="/student/menu" element={<ProtectedRoute allowedRoles={['student']}><StudentMenu /></ProtectedRoute>} />
         <Route path="/student/announcements" element={<ProtectedRoute allowedRoles={['student']}><StudentAnnouncements /></ProtectedRoute>} />
+        <Route path="/student/lost-found" element={<ProtectedRoute allowedRoles={['student']}><StudentLostFound /></ProtectedRoute>} />
         <Route path="/warden/dashboard" element={<ProtectedRoute allowedRoles={['warden']}><WardenDashboard /></ProtectedRoute>} />
         <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       </Route>
