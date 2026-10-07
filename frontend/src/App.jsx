@@ -1,11 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
-import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-
-import Login from './pages/Login';
-import Register from './pages/Register';
 import StudentDashboard from './pages/student/Dashboard';
 import StudentRoom from './pages/student/Room';
 import StudentComplaints from './pages/student/Complaints';
@@ -21,7 +17,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user } = useAuth();
   
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/student/dashboard" replace />;
   }
   
   if (allowedRoles && !allowedRoles.includes(user.role)) {
@@ -34,11 +30,6 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 function AppRoutes() {
   return (
     <Routes>
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Route>
-      
       <Route element={<DashboardLayout />}>
         <Route path="/student/dashboard" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
         <Route path="/student/room" element={<ProtectedRoute allowedRoles={['student']}><StudentRoom /></ProtectedRoute>} />
@@ -52,7 +43,7 @@ function AppRoutes() {
         <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/student/dashboard" replace />} />
     </Routes>
   );
 }
