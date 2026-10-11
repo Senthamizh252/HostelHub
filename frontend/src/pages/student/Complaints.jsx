@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Wrench, FileText, Clock, Settings, CheckCircle2, Search, 
@@ -6,13 +6,130 @@ import {
   Armchair, Eye, ChevronRight, ChevronLeft, Info, Check, 
   Phone, Plus, Heart
 } from 'lucide-react';
+import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
 
 const complaintsData = [
-  { id: '#C001', category: 'Water', icon: Droplet, iconColor: 'text-blue-500', iconBg: 'bg-blue-100', desc: 'No water supply in bathroom', room: 'A-204', priority: 'Emergency', status: 'Pending', date: '28 Sep 2026', time: '10:30 AM' },
-  { id: '#C002', category: 'Electrical', icon: Zap, iconColor: 'text-orange-500', iconBg: 'bg-orange-100', desc: 'Fan not working in room', room: 'A-204', priority: 'High', status: 'In Progress', date: '27 Sep 2026', time: '04:15 PM' },
-  { id: '#C003', category: 'Cleaning', icon: Sparkles, iconColor: 'text-green-500', iconBg: 'bg-green-100', desc: 'Room not cleaned properly', room: 'A-103', priority: 'Medium', status: 'Assigned', date: '26 Sep 2026', time: '11:20 AM' },
-  { id: '#C004', category: 'WiFi', icon: Wifi, iconColor: 'text-blue-500', iconBg: 'bg-blue-100', desc: 'Slow internet speed in hostel', room: 'B-112', priority: 'Low', status: 'Resolved', date: '24 Sep 2026', time: '02:45 PM' },
-  { id: '#C005', category: 'Furniture', icon: Armchair, iconColor: 'text-purple-500', iconBg: 'bg-purple-100', desc: 'Broken chair in study room', room: 'A-301', priority: 'Medium', status: 'Resolved', date: '21 Sep 2026', time: '09:10 AM' },
+  { 
+    id: '#C001', 
+    category: 'Water', 
+    icon: Droplet, 
+    iconColor: 'text-blue-500', 
+    iconBg: 'bg-blue-100', 
+    desc: 'No water supply in bathroom', 
+    room: 'A-204', 
+    priority: 'Emergency', 
+    status: 'Pending', 
+    date: '28 Sep 2026', 
+    time: '10:30 AM',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Suresh Verma',
+    assignedRole: 'Hostel Maintenance Plumber',
+    description: 'The main distribution pipe valve seems clogged or turned off; there has been no running water in the bathroom of room A-204 since this morning. Immediate maintenance required.',
+    resolutionNotes: 'Emergency plumber ticket generated. Technician dispatched to inspect overhead tank outlet line.',
+    timeline: [
+      { title: 'Emergency Reported', desc: 'Logged via student portal', time: '28 Sep 2026, 10:30 AM', done: true },
+      { title: 'Warden Escalated', desc: 'Escalated to Maintenance Supervisor', time: '28 Sep 2026, 10:45 AM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Suresh Verma', time: '28 Sep 2026, 11:00 AM', done: true },
+      { title: 'Awaiting Resolution', desc: 'Technician on site inspecting supply lines', time: 'In progress', done: false }
+    ]
+  },
+  { 
+    id: '#C002', 
+    category: 'Electrical', 
+    icon: Zap, 
+    iconColor: 'text-orange-500', 
+    iconBg: 'bg-orange-100', 
+    desc: 'Fan not working in room', 
+    room: 'A-204', 
+    priority: 'High', 
+    status: 'In Progress', 
+    date: '27 Sep 2026', 
+    time: '04:15 PM',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Ramesh Kumar',
+    assignedRole: 'Hostel Electrician',
+    description: 'The ceiling fan makes an erratic humming noise and fails to spin. Likely a burnt capacitor or motor coil failure.',
+    resolutionNotes: 'Electrician inspected the ceiling unit. New capacitor requisitioned from stores; replacement work in progress.',
+    timeline: [
+      { title: 'Complaint Registered', desc: 'Logged by student', time: '27 Sep 2026, 04:15 PM', done: true },
+      { title: 'Warden Acknowledged', desc: 'Verified by hostel office', time: '27 Sep 2026, 05:00 PM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Ramesh Kumar (Electrician)', time: '28 Sep 2026, 09:30 AM', done: true },
+      { title: 'Repair in Progress', desc: 'Parts being installed', time: 'Today', done: false }
+    ]
+  },
+  { 
+    id: '#C003', 
+    category: 'Cleaning', 
+    icon: Sparkles, 
+    iconColor: 'text-green-500', 
+    iconBg: 'bg-green-100', 
+    desc: 'Room not cleaned properly', 
+    room: 'A-103', 
+    priority: 'Medium', 
+    status: 'Assigned', 
+    date: '26 Sep 2026', 
+    time: '11:20 AM',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Anand K',
+    assignedRole: 'Housekeeping Supervisor',
+    description: 'Dust and litter under the beds and the trash bins were left unemptied during regular morning housekeeping round.',
+    resolutionNotes: 'Housekeeping supervisor scheduled additional deep cleaning for this afternoon.',
+    timeline: [
+      { title: 'Complaint Registered', desc: 'Logged by student', time: '26 Sep 2026, 11:20 AM', done: true },
+      { title: 'Supervisor Assigned', desc: 'Assigned to Anand K', time: '26 Sep 2026, 01:15 PM', done: true },
+      { title: 'Cleaning Scheduled', desc: 'Afternoon housekeeping team assigned', time: 'Pending completion', done: false }
+    ]
+  },
+  { 
+    id: '#C004', 
+    category: 'WiFi', 
+    icon: Wifi, 
+    iconColor: 'text-blue-500', 
+    iconBg: 'bg-blue-100', 
+    desc: 'Slow internet speed in hostel', 
+    room: 'B-112', 
+    priority: 'Low', 
+    status: 'Resolved', 
+    date: '24 Sep 2026', 
+    time: '02:45 PM',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Rajesh Kumar',
+    assignedRole: 'Network Support Specialist',
+    description: 'Frequent high latency and packet loss on the Wi-Fi access point in Block B, impacting online learning portals.',
+    resolutionNotes: 'Access point channels reconfigured and bandwidth throttling cleared. Tested speed at 85 Mbps.',
+    resolvedDate: '24 Sep 2026, 06:00 PM',
+    timeline: [
+      { title: 'Complaint Registered', desc: 'Logged by student', time: '24 Sep 2026, 02:45 PM', done: true },
+      { title: 'Acknowledged', desc: 'Forwarded to IT support team', time: '24 Sep 2026, 03:15 PM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Rajesh Kumar', time: '24 Sep 2026, 04:00 PM', done: true },
+      { title: 'Issue Resolved', desc: 'Network router reconfigured & speed verified', time: '24 Sep 2026, 06:00 PM', done: true }
+    ]
+  },
+  { 
+    id: '#C005', 
+    category: 'Furniture', 
+    icon: Armchair, 
+    iconColor: 'text-purple-500', 
+    iconBg: 'bg-purple-100', 
+    desc: 'Broken chair in study room', 
+    room: 'A-301', 
+    priority: 'Medium', 
+    status: 'Resolved', 
+    date: '21 Sep 2026', 
+    time: '09:10 AM',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Selvam K',
+    assignedRole: 'Hostel Senior Carpenter',
+    description: 'Back support slat on the wooden study chair is cracked and detached from the side frame.',
+    resolutionNotes: 'Defective chair taken to workshop. Replaced with inspected wooden ergonomic study chair.',
+    resolvedDate: '21 Sep 2026, 03:30 PM',
+    timeline: [
+      { title: 'Complaint Registered', desc: 'Logged by student', time: '21 Sep 2026, 09:10 AM', done: true },
+      { title: 'Acknowledged', desc: 'Verified by hostel supervisor', time: '21 Sep 2026, 10:00 AM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Selvam K', time: '21 Sep 2026, 11:30 AM', done: true },
+      { title: 'Chair Replaced', desc: 'Delivered replacement chair to room', time: '21 Sep 2026, 03:30 PM', done: true }
+    ]
+  },
 ];
 
 const getPriorityPill = (priority) => {
@@ -36,6 +153,7 @@ const getStatusPill = (status) => {
 };
 
 const StudentComplaints = () => {
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
   return (
     <div className="flex flex-col xl:flex-row gap-6 max-w-7xl mx-auto pb-10 font-sans">
       
@@ -210,7 +328,11 @@ const StudentComplaints = () => {
                       <p className="text-slate-400 text-[10px] mt-0.5">{complaint.time}</p>
                     </td>
                     <td className="px-6 py-4">
-                      <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-semibold transition-colors">
+                      <button 
+                        onClick={() => setSelectedComplaint(complaint)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                        title="View complaint details"
+                      >
                         <Eye size={12} /> View <ChevronRight size={12} />
                       </button>
                     </td>
@@ -326,6 +448,13 @@ const StudentComplaints = () => {
         </div>
 
       </div>
+
+      {/* Complaint Details Modal */}
+      <ComplaintDetailsModal 
+        complaint={selectedComplaint} 
+        isOpen={!!selectedComplaint} 
+        onClose={() => setSelectedComplaint(null)} 
+      />
     </div>
   );
 };

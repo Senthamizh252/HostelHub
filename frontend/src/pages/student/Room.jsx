@@ -1,12 +1,83 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Home, Bed, BedDouble, Building, Users, AlertTriangle, Phone, 
   ClipboardList, Settings, Fan, Plug, Wifi, Archive, Monitor, 
   Eye, ChevronRight, Plus, Heart, User, MapPin
 } from 'lucide-react';
+import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
+
+const recentRoomIssues = [
+  {
+    id: '#CMP-102-03',
+    issue: 'Wi-Fi not working',
+    category: 'WiFi',
+    priority: 'Medium',
+    status: 'Resolved',
+    date: '26 Sep 2026',
+    time: '10:30 AM',
+    room: 'A-102',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Rajesh Kumar',
+    assignedRole: 'Network Support Specialist',
+    description: 'Wi-Fi signal drops frequently in room A-102 with less than 1 bar of signal strength. Students in the room are unable to access course materials or attend online lectures.',
+    resolutionNotes: 'Router firmware updated and access point in corridor 2 replaced. Signal verified at full strength inside room A-102 (speed test clocked 85 Mbps).',
+    resolvedDate: '26 Sep 2026, 04:15 PM',
+    timeline: [
+      { title: 'Complaint Logged', desc: 'Reported via student portal', time: '26 Sep 2026, 10:30 AM', done: true },
+      { title: 'Warden Verified', desc: 'Acknowledged by Dr. R. Meenakshi', time: '26 Sep 2026, 11:15 AM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Rajesh Kumar (IT)', time: '26 Sep 2026, 01:00 PM', done: true },
+      { title: 'Resolved & Tested', desc: 'Access point replaced and verified', time: '26 Sep 2026, 04:15 PM', done: true }
+    ]
+  },
+  {
+    id: '#CMP-102-02',
+    issue: 'Bathroom tap leaking',
+    category: 'Plumbing',
+    priority: 'High',
+    status: 'Pending',
+    date: '22 Sep 2026',
+    time: '08:45 AM',
+    room: 'A-102',
+    reportedBy: 'You (Student)',
+    assignedTo: 'Suresh Verma',
+    assignedRole: 'Hostel Maintenance Plumber',
+    description: 'The cold water tap on the bathroom washbasin has a damaged washer and is continuously leaking water. The shutoff knob does not tighten fully, causing continuous water loss.',
+    resolutionNotes: 'Maintenance ticket #PL-402 generated. Plumber scheduled for inspection and spindle valve replacement today between 2:00 PM – 4:00 PM.',
+    resolvedDate: 'Pending inspection',
+    timeline: [
+      { title: 'Complaint Logged', desc: 'Reported via student portal', time: '22 Sep 2026, 08:45 AM', done: true },
+      { title: 'Warden Verified', desc: 'Acknowledged by Dr. R. Meenakshi', time: '22 Sep 2026, 09:30 AM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Suresh Verma', time: '22 Sep 2026, 11:00 AM', done: true },
+      { title: 'Awaiting Fix', desc: 'Scheduled inspection visit today (2:00 PM – 4:00 PM)', time: 'In progress', done: false }
+    ]
+  },
+  {
+    id: '#CMP-102-01',
+    issue: 'Broken chair in study room',
+    category: 'Furniture',
+    priority: 'Low',
+    status: 'Resolved',
+    date: '18 Sep 2026',
+    time: '02:15 PM',
+    room: 'A-102',
+    reportedBy: 'Keerthana R (Roommate)',
+    assignedTo: 'Selvam K',
+    assignedRole: 'Hostel Senior Carpenter',
+    description: 'One of the study table wooden chairs has a cracked backrest slat and a wobbly right rear leg joint, making it unsafe and uncomfortable to use during study sessions.',
+    resolutionNotes: 'Broken chair moved to carpentry workshop for structural reinforcement. Replaced with an inspected ergonomic study chair from Block A inventory store.',
+    resolvedDate: '19 Sep 2026, 11:30 AM',
+    timeline: [
+      { title: 'Complaint Logged', desc: 'Reported by Keerthana R', time: '18 Sep 2026, 02:15 PM', done: true },
+      { title: 'Warden Verified', desc: 'Acknowledged by Dr. R. Meenakshi', time: '18 Sep 2026, 03:00 PM', done: true },
+      { title: 'Technician Assigned', desc: 'Assigned to Selvam K', time: '19 Sep 2026, 09:30 AM', done: true },
+      { title: 'Replaced & Resolved', desc: 'New study chair delivered to room', time: '19 Sep 2026, 11:30 AM', done: true }
+    ]
+  }
+];
 
 const StudentRoom = () => {
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
   return (
     <div className="max-w-7xl mx-auto pb-10 font-sans space-y-6">
       
@@ -407,48 +478,51 @@ const StudentRoom = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-5 py-4 text-xs font-medium text-slate-500">26 Sep 2026</td>
-                  <td className="px-5 py-4 text-xs text-slate-700">Wi-Fi not working</td>
-                  <td className="px-5 py-4 text-xs text-slate-600">WiFi</td>
-                  <td className="px-5 py-4"><span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-600">Medium</span></td>
-                  <td className="px-5 py-4"><span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-600">Resolved</span></td>
-                  <td className="px-5 py-4">
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-[11px] font-bold transition-colors">
-                      <Eye size={12} /> View
-                    </button>
-                  </td>
-                </tr>
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-5 py-4 text-xs font-medium text-slate-500">22 Sep 2026</td>
-                  <td className="px-5 py-4 text-xs text-slate-700">Bathroom tap leaking</td>
-                  <td className="px-5 py-4 text-xs text-slate-600">Plumbing</td>
-                  <td className="px-5 py-4"><span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-600">High</span></td>
-                  <td className="px-5 py-4"><span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-600">Pending</span></td>
-                  <td className="px-5 py-4">
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-[11px] font-bold transition-colors">
-                      <Eye size={12} /> View
-                    </button>
-                  </td>
-                </tr>
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-5 py-4 text-xs font-medium text-slate-500">18 Sep 2026</td>
-                  <td className="px-5 py-4 text-xs text-slate-700">Broken chair in study room</td>
-                  <td className="px-5 py-4 text-xs text-slate-600">Furniture</td>
-                  <td className="px-5 py-4"><span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-600">Low</span></td>
-                  <td className="px-5 py-4"><span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-600">Resolved</span></td>
-                  <td className="px-5 py-4">
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-[11px] font-bold transition-colors">
-                      <Eye size={12} /> View
-                    </button>
-                  </td>
-                </tr>
+                {recentRoomIssues.map((issue) => (
+                  <tr key={issue.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-5 py-4 text-xs font-medium text-slate-500">{issue.date}</td>
+                    <td className="px-5 py-4 text-xs font-medium text-slate-800">{issue.issue}</td>
+                    <td className="px-5 py-4 text-xs text-slate-600">{issue.category}</td>
+                    <td className="px-5 py-4">
+                      {issue.priority === 'High' ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-600">High</span>
+                      ) : issue.priority === 'Medium' ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-600">Medium</span>
+                      ) : (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-600">Low</span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4">
+                      {issue.status === 'Resolved' ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-600">Resolved</span>
+                      ) : (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-600">Pending</span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4">
+                      <button 
+                        onClick={() => setSelectedComplaint(issue)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg text-[11px] font-bold transition-colors cursor-pointer"
+                        title="View details"
+                      >
+                        <Eye size={12} /> View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
 
       </div>
+
+      {/* Complaint Details Modal */}
+      <ComplaintDetailsModal 
+        complaint={selectedComplaint} 
+        isOpen={!!selectedComplaint} 
+        onClose={() => setSelectedComplaint(null)} 
+      />
     </div>
   );
 };
