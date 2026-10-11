@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Utensils, Star, Sun, Moon, Coffee, Calendar, Clock, ClipboardList,
   MessageSquare, BarChart2, Zap, Phone, ChevronDown, Check, Heart, User,
   Leaf, ArrowUp
 } from 'lucide-react';
+import ContactWardenModal from '../../components/ContactWardenModal';
 
 const weeklyMenu = [
   { day: 'Monday', date: '29 Sep', breakfast: 'Idli • Sambar • Chutney', lunch: 'Rice • Sambar • Poriyal • Curd', snacks: 'Tea • Biscuit', dinner: 'Chapathi • Paneer Kurma' },
@@ -17,6 +18,7 @@ const weeklyMenu = [
 ];
 
 const StudentMenu = () => {
+  const [isWardenModalOpen, setIsWardenModalOpen] = useState(false);
   return (
     <div className="flex flex-col xl:flex-row gap-6 max-w-7xl mx-auto pb-10 font-sans">
       
@@ -455,13 +457,22 @@ const StudentMenu = () => {
               <Link to="/student/complaints" className="flex-1 border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 font-bold text-[11px] py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors">
                 <ClipboardList size={12} /> View Complaints
               </Link>
-              <button className="w-full border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 font-bold text-[11px] py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1">
+              <button 
+                onClick={() => setIsWardenModalOpen(true)}
+                className="w-full border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 font-bold text-[11px] py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1 cursor-pointer"
+              >
                 <Phone size={12} /> Contact Warden
               </button>
            </div>
         </div>
 
       </div>
+
+      {/* Contact Warden Modal */}
+      <ContactWardenModal 
+        isOpen={isWardenModalOpen} 
+        onClose={() => setIsWardenModalOpen(false)} 
+      />
     </div>
   );
 };

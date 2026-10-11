@@ -7,6 +7,7 @@ import {
   Phone, Plus, Heart, X
 } from 'lucide-react';
 import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
+import ContactWardenModal from '../../components/ContactWardenModal';
 
 const complaintsData = [
   { 
@@ -154,6 +155,7 @@ const getStatusPill = (status) => {
 
 const StudentComplaints = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [isWardenModalOpen, setIsWardenModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedPriority, setSelectedPriority] = useState('All');
@@ -609,7 +611,10 @@ const StudentComplaints = () => {
             Contact your warden for urgent issues.
           </p>
           
-          <button className="w-full flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 px-4 rounded-xl text-xs font-bold transition-colors">
+          <button 
+            onClick={() => setIsWardenModalOpen(true)}
+            className="w-full flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 px-4 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          >
             <Phone size={14} /> Contact Warden
           </button>
         </div>
@@ -621,6 +626,12 @@ const StudentComplaints = () => {
         complaint={selectedComplaint} 
         isOpen={!!selectedComplaint} 
         onClose={() => setSelectedComplaint(null)} 
+      />
+
+      {/* Contact Warden Modal */}
+      <ContactWardenModal 
+        isOpen={isWardenModalOpen} 
+        onClose={() => setIsWardenModalOpen(false)} 
       />
     </div>
   );

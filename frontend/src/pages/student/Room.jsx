@@ -6,6 +6,7 @@ import {
   Eye, ChevronRight, Plus, Heart, User, MapPin
 } from 'lucide-react';
 import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
+import ContactWardenModal from '../../components/ContactWardenModal';
 
 const recentRoomIssues = [
   {
@@ -78,6 +79,7 @@ const recentRoomIssues = [
 
 const StudentRoom = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [isWardenModalOpen, setIsWardenModalOpen] = useState(false);
   return (
     <div className="max-w-7xl mx-auto pb-10 font-sans space-y-6">
       
@@ -288,7 +290,10 @@ const StudentRoom = () => {
                </div>
             </Link>
             
-            <button className="bg-blue-50 hover:bg-blue-100 transition-colors rounded-xl p-4 flex items-center gap-3 group border border-blue-100/50">
+            <button 
+              onClick={() => setIsWardenModalOpen(true)}
+              className="bg-blue-50 hover:bg-blue-100 transition-colors rounded-xl p-4 flex items-center gap-3 group border border-blue-100/50 cursor-pointer text-left w-full"
+            >
                <div className="bg-white text-blue-600 p-2 rounded-lg shrink-0 shadow-sm">
                  <Phone size={18} />
                </div>
@@ -370,7 +375,10 @@ const StudentRoom = () => {
             </div>
           </div>
           
-          <button className="mt-4 w-full flex items-center justify-center gap-2 border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 py-2.5 rounded-xl text-xs font-bold transition-colors">
+          <button 
+            onClick={() => setIsWardenModalOpen(true)}
+            className="mt-4 w-full flex items-center justify-center gap-2 border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          >
             <Phone size={14} /> Contact Warden
           </button>
         </div>
@@ -522,6 +530,12 @@ const StudentRoom = () => {
         complaint={selectedComplaint} 
         isOpen={!!selectedComplaint} 
         onClose={() => setSelectedComplaint(null)} 
+      />
+
+      {/* Contact Warden Modal */}
+      <ContactWardenModal 
+        isOpen={isWardenModalOpen} 
+        onClose={() => setIsWardenModalOpen(false)} 
       />
     </div>
   );

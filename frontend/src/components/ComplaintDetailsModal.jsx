@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, CheckCircle2, Clock, AlertTriangle, Calendar, MapPin, 
   User, Wrench, Wifi, Droplet, Zap, Sparkles, Armchair, 
   Check, Phone, FileText, ChevronRight, Info, ShieldCheck, ArrowUpRight
 } from 'lucide-react';
+import ContactWardenModal from './ContactWardenModal';
 
 export default function ComplaintDetailsModal({ complaint, isOpen, onClose }) {
+  const [isWardenModalOpen, setIsWardenModalOpen] = useState(false);
   // Close on ESC key press
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -271,22 +273,29 @@ export default function ComplaintDetailsModal({ complaint, isOpen, onClose }) {
 
           <div className="flex items-center gap-2 ml-auto">
             {status === 'Pending' && (
-              <a 
-                href="tel:+919876543210" 
-                className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+              <button 
+                type="button"
+                onClick={() => setIsWardenModalOpen(true)}
+                className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Phone size={13} /> Contact Warden
-              </a>
+              </button>
             )}
             <button
               onClick={onClose}
-              className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm shadow-blue-200"
+              className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm shadow-blue-200 cursor-pointer"
             >
               Close
             </button>
           </div>
         </div>
       </div>
+
+      {/* Contact Warden Modal */}
+      <ContactWardenModal 
+        isOpen={isWardenModalOpen} 
+        onClose={() => setIsWardenModalOpen(false)} 
+      />
     </div>
   );
 }
