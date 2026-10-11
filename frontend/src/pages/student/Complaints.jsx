@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Wrench, FileText, Clock, Settings, CheckCircle2, Search, 
   ChevronDown, RefreshCw, Droplet, Zap, Sparkles, Wifi, 
   Armchair, Eye, ChevronRight, ChevronLeft, Info, Check, 
-  Phone, Plus, Heart
+  Phone, Plus, Heart, X
 } from 'lucide-react';
 import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
 
@@ -154,6 +154,53 @@ const getStatusPill = (status) => {
 
 const StudentComplaints = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedPriority, setSelectedPriority] = useState('All');
+  const [selectedStatus, setSelectedStatus] = useState('All');
+
+  // Filter complaints dynamically
+  const filteredComplaints = useMemo(() => {
+    return complaintsData.filter((item) => {
+      const q = searchQuery.trim().toLowerCase();
+      const matchesSearch = 
+        !q ||
+        (item.desc && item.desc.toLowerCase().includes(q)) ||
+        (item.id && item.id.toLowerCase().includes(q)) ||
+        (item.category && item.category.toLowerCase().includes(q)) ||
+        (item.room && item.room.toLowerCase().includes(q));
+
+      const matchesCategory = 
+        selectedCategory === 'All' || 
+        item.category.toLowerCase() === selectedCategory.toLowerCase();
+
+      const matchesPriority = 
+        selectedPriority === 'All' || 
+        item.priority.toLowerCase() === selectedPriority.toLowerCase();
+
+      const matchesStatus = 
+        selectedStatus === 'All' || 
+        item.status.toLowerCase() === selectedStatus.toLowerCase();
+
+      return matchesSearch && matchesCategory && matchesPriority && matchesStatus;
+    });
+  }, [searchQuery, selectedCategory, selectedPriority, selectedStatus]);
+
+  // Dynamic counts for cards
+  const totalCount = complaintsData.length;
+  const pendingCount = complaintsData.filter(c => c.status === 'Pending').length;
+  const inProgressCount = complaintsData.filter(c => c.status === 'In Progress' || c.status === 'Assigned').length;
+  const resolvedCount = complaintsData.filter(c => c.status === 'Resolved').length;
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('All');
+    setSelectedPriority('All');
+    setSelectedStatus('All');
+  };
+
+  const isFiltered = searchQuery.trim() !== '' || selectedCategory !== 'All' || selectedPriority !== 'All' || selectedStatus !== 'All';
+
   return (
     <div className="flex flex-col xl:flex-row gap-6 max-w-7xl mx-auto pb-10 font-sans">
       
@@ -212,46 +259,70 @@ const StudentComplaints = () => {
 
         {/* 4 Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center gap-4">
+          <div 
+            onClick={() => { setSelectedStatus('All'); setSelectedCategory('All'); setSelectedPriority('All'); setSearchQuery(''); }}
+            className={`bg-white rounded-2xl p-5 border shadow-sm flex items-center gap-4 cursor-pointer hover:shadow-md transition-all ${
+              selectedStatus === 'All' && !isFiltered ? 'border-blue-300 ring-2 ring-blue-100' : 'border-slate-100'
+            }`}
+            title="Click to view all complaints"
+          >
             <div className="bg-blue-50 text-blue-500 p-3 rounded-xl shrink-0">
               <FileText size={22} />
             </div>
             <div>
               <p className="text-slate-500 font-semibold text-xs mb-0.5">Total Complaints</p>
-              <h3 className="text-xl font-bold text-slate-800">5</h3>
+              <h3 className="text-xl font-bold text-slate-800">{totalCount}</h3>
               <p className="text-slate-400 text-[10px] mt-0.5">All time</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center gap-4">
+          <div 
+            onClick={() => setSelectedStatus(selectedStatus === 'Pending' ? 'All' : 'Pending')}
+            className={`bg-white rounded-2xl p-5 border shadow-sm flex items-center gap-4 cursor-pointer hover:shadow-md transition-all ${
+              selectedStatus === 'Pending' ? 'border-amber-400 ring-2 ring-amber-100' : 'border-slate-100'
+            }`}
+            title="Click to filter Pending"
+          >
             <div className="bg-amber-50 text-amber-500 p-3 rounded-xl shrink-0">
               <Clock size={22} />
             </div>
             <div>
               <p className="text-slate-500 font-semibold text-xs mb-0.5">Pending</p>
-              <h3 className="text-xl font-bold text-slate-800">2</h3>
-              <p className="text-slate-400 text-[10px] mt-0.5">In progress</p>
+              <h3 className="text-xl font-bold text-slate-800">{pendingCount}</h3>
+              <p className="text-slate-400 text-[10px] mt-0.5">Awaiting action</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center gap-4">
+          <div 
+            onClick={() => setSelectedStatus(selectedStatus === 'In Progress' ? 'All' : 'In Progress')}
+            className={`bg-white rounded-2xl p-5 border shadow-sm flex items-center gap-4 cursor-pointer hover:shadow-md transition-all ${
+              selectedStatus === 'In Progress' ? 'border-purple-400 ring-2 ring-purple-100' : 'border-slate-100'
+            }`}
+            title="Click to filter In Progress"
+          >
             <div className="bg-purple-50 text-purple-500 p-3 rounded-xl shrink-0">
               <Settings size={22} />
             </div>
             <div>
               <p className="text-slate-500 font-semibold text-xs mb-0.5">In Progress</p>
-              <h3 className="text-xl font-bold text-slate-800">1</h3>
+              <h3 className="text-xl font-bold text-slate-800">{inProgressCount}</h3>
               <p className="text-slate-400 text-[10px] mt-0.5">Being resolved</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center gap-4">
+          <div 
+            onClick={() => setSelectedStatus(selectedStatus === 'Resolved' ? 'All' : 'Resolved')}
+            className={`bg-white rounded-2xl p-5 border shadow-sm flex items-center gap-4 cursor-pointer hover:shadow-md transition-all ${
+              selectedStatus === 'Resolved' ? 'border-green-400 ring-2 ring-green-100' : 'border-slate-100'
+            }`}
+            title="Click to filter Resolved"
+          >
             <div className="bg-green-50 text-green-500 p-3 rounded-xl shrink-0">
               <CheckCircle2 size={22} />
             </div>
             <div>
               <p className="text-slate-500 font-semibold text-xs mb-0.5">Resolved</p>
-              <h3 className="text-xl font-bold text-slate-800">2</h3>
+              <h3 className="text-xl font-bold text-slate-800">{resolvedCount}</h3>
               <p className="text-slate-400 text-[10px] mt-0.5">Completed</p>
             </div>
           </div>
@@ -265,22 +336,94 @@ const StudentComplaints = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
               <input 
                 type="text" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search complaints..." 
-                className="pl-9 pr-4 py-2 w-full bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-700"
+                className="pl-9 pr-8 py-2 w-full bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-700 placeholder:text-slate-400"
               />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded cursor-pointer"
+                  title="Clear search"
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
             
             <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 scrollbar-hide">
-              <button className="flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-100 whitespace-nowrap font-medium">
-                All Categories <ChevronDown size={14} />
-              </button>
-              <button className="flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-100 whitespace-nowrap font-medium">
-                All Priorities <ChevronDown size={14} />
-              </button>
-              <button className="flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-100 whitespace-nowrap font-medium">
-                All Statuses <ChevronDown size={14} />
-              </button>
-              <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-slate-500 hover:text-slate-700 whitespace-nowrap font-medium ml-1">
+              {/* Category Filter */}
+              <div className="relative">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className={`appearance-none flex items-center gap-2 pl-3 pr-8 py-2 border rounded-lg text-sm whitespace-nowrap font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer transition-all ${
+                    selectedCategory !== 'All' 
+                      ? 'bg-blue-50 border-blue-300 text-blue-700 font-semibold' 
+                      : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <option value="All">All Categories</option>
+                  <option value="Water">Water</option>
+                  <option value="Electrical">Electrical</option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="WiFi">WiFi</option>
+                  <option value="Furniture">Furniture</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+              </div>
+
+              {/* Priority Filter */}
+              <div className="relative">
+                <select
+                  value={selectedPriority}
+                  onChange={(e) => setSelectedPriority(e.target.value)}
+                  className={`appearance-none flex items-center gap-2 pl-3 pr-8 py-2 border rounded-lg text-sm whitespace-nowrap font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer transition-all ${
+                    selectedPriority !== 'All' 
+                      ? 'bg-blue-50 border-blue-300 text-blue-700 font-semibold' 
+                      : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <option value="All">All Priorities</option>
+                  <option value="Emergency">Emergency</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+              </div>
+
+              {/* Status Filter */}
+              <div className="relative">
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                  className={`appearance-none flex items-center gap-2 pl-3 pr-8 py-2 border rounded-lg text-sm whitespace-nowrap font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer transition-all ${
+                    selectedStatus !== 'All' 
+                      ? 'bg-blue-50 border-blue-300 text-blue-700 font-semibold' 
+                      : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <option value="All">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Assigned">Assigned</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+              </div>
+
+              {/* Clear Filters */}
+              <button 
+                onClick={handleClearFilters}
+                className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap ml-1 cursor-pointer ${
+                  isFiltered 
+                    ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 font-semibold' 
+                    : 'text-slate-400 hover:text-slate-600'
+                }`}
+                title="Reset all filters"
+              >
                 <RefreshCw size={14} /> Clear Filters
               </button>
             </div>
@@ -302,49 +445,73 @@ const StudentComplaints = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {complaintsData.map((complaint) => (
-                  <tr key={complaint.id} className="hover:bg-slate-50/50 transition-colors bg-white">
-                    <td className="px-6 py-4 font-medium text-slate-500 text-xs">{complaint.id}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-full ${complaint.iconBg} ${complaint.iconColor}`}>
-                          <complaint.icon size={14} />
+                {filteredComplaints.length > 0 ? (
+                  filteredComplaints.map((complaint) => (
+                    <tr key={complaint.id} className="hover:bg-slate-50/50 transition-colors bg-white">
+                      <td className="px-6 py-4 font-medium text-slate-500 text-xs">{complaint.id}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-full ${complaint.iconBg} ${complaint.iconColor}`}>
+                            <complaint.icon size={14} />
+                          </div>
+                          <span className="font-semibold text-slate-800 text-xs">{complaint.category}</span>
                         </div>
-                        <span className="font-semibold text-slate-800 text-xs">{complaint.category}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="text-slate-600 text-xs w-48 truncate" title={complaint.desc}>{complaint.desc}</p>
+                      </td>
+                      <td className="px-6 py-4 text-slate-600 text-xs font-medium">{complaint.room}</td>
+                      <td className="px-6 py-4">
+                        {getPriorityPill(complaint.priority)}
+                      </td>
+                      <td className="px-6 py-4">
+                        {getStatusPill(complaint.status)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="text-slate-800 text-xs font-medium">{complaint.date}</p>
+                        <p className="text-slate-400 text-[10px] mt-0.5">{complaint.time}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button 
+                          onClick={() => setSelectedComplaint(complaint)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                          title="View complaint details"
+                        >
+                          <Eye size={12} /> View <ChevronRight size={12} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8" className="px-6 py-12 text-center bg-white">
+                      <div className="flex flex-col items-center justify-center max-w-sm mx-auto">
+                        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3">
+                          <Search size={20} />
+                        </div>
+                        <h4 className="font-bold text-slate-800 text-sm mb-1">No complaints found</h4>
+                        <p className="text-xs text-slate-500 mb-4">
+                          No complaints match your selected category, priority, or status filters.
+                        </p>
+                        <button 
+                          onClick={handleClearFilters}
+                          className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <RefreshCw size={12} /> Reset All Filters
+                        </button>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="text-slate-600 text-xs w-48 truncate" title={complaint.desc}>{complaint.desc}</p>
-                    </td>
-                    <td className="px-6 py-4 text-slate-600 text-xs font-medium">{complaint.room}</td>
-                    <td className="px-6 py-4">
-                      {getPriorityPill(complaint.priority)}
-                    </td>
-                    <td className="px-6 py-4">
-                      {getStatusPill(complaint.status)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-slate-800 text-xs font-medium">{complaint.date}</p>
-                      <p className="text-slate-400 text-[10px] mt-0.5">{complaint.time}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button 
-                        onClick={() => setSelectedComplaint(complaint)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 active:bg-blue-200 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
-                        title="View complaint details"
-                      >
-                        <Eye size={12} /> View <ChevronRight size={12} />
-                      </button>
-                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
 
           {/* Pagination Footer */}
           <div className="p-4 border-t border-slate-100 flex items-center justify-between bg-white">
-            <span className="text-xs text-slate-500 font-medium">Showing 1 - 5 of 5 complaints</span>
+            <span className="text-xs text-slate-500 font-medium">
+              Showing {filteredComplaints.length > 0 ? 1 : 0} - {filteredComplaints.length} of {complaintsData.length} complaints
+            </span>
             <div className="flex items-center gap-1">
               <button className="w-7 h-7 flex items-center justify-center rounded border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" disabled>
                 <ChevronLeft size={14} />

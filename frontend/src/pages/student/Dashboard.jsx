@@ -59,9 +59,9 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        {/* 4 Summary Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Card 1 */}
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Card 1: Active Complaints */}
           <div className="bg-red-50/70 rounded-2xl p-5 border border-red-100/50 hover:shadow-sm transition-all flex flex-col justify-between h-40">
             <div className="bg-red-100 text-red-500 p-2.5 rounded-full w-max">
               <Wrench size={20} />
@@ -72,18 +72,7 @@ const StudentDashboard = () => {
               <Link to="/student/complaints" className="text-red-500 text-xs font-semibold flex items-center gap-1 hover:text-red-600">View all <ArrowRight size={12}/></Link>
             </div>
           </div>
-          {/* Card 2 */}
-          <div className="bg-orange-50/70 rounded-2xl p-5 border border-orange-100/50 hover:shadow-sm transition-all flex flex-col justify-between h-40">
-            <div className="bg-orange-100 text-orange-500 p-2.5 rounded-full w-max">
-              <FileText size={20} />
-            </div>
-            <div>
-              <p className="text-slate-700 font-semibold text-sm mb-1">Pending Leaves</p>
-              <h3 className="text-3xl font-bold text-slate-800 mb-2">1</h3>
-              <Link to="/student/leaves" className="text-orange-500 text-xs font-semibold flex items-center gap-1 hover:text-orange-600">View all <ArrowRight size={12}/></Link>
-            </div>
-          </div>
-          {/* Card 3 */}
+          {/* Card 2: Today's Meal */}
           <div className="bg-green-50/70 rounded-2xl p-5 border border-green-100/50 hover:shadow-sm transition-all flex flex-col justify-between h-40">
             <div className="bg-green-100 text-green-600 p-2.5 rounded-full w-max">
               <Utensils size={20} />
@@ -94,7 +83,7 @@ const StudentDashboard = () => {
               <Link to="/student/menu" className="text-green-600 text-xs font-semibold flex items-center gap-1 hover:text-green-700">View Menu <ArrowRight size={12}/></Link>
             </div>
           </div>
-          {/* Card 4 */}
+          {/* Card 3: New Notifications */}
           <div className="bg-purple-50/70 rounded-2xl p-5 border border-purple-100/50 hover:shadow-sm transition-all flex flex-col justify-between h-40">
             <div className="bg-purple-100 text-purple-600 p-2.5 rounded-full w-max">
               <Bell size={20} />
