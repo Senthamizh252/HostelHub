@@ -1,451 +1,551 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
-  Bell, Check, Calendar, FileText, Megaphone, Utensils, AlertCircle, Info, 
-  CheckCircle2, ChevronRight, Send, MessageSquare, Briefcase
+  Bell, Check, Clock, ChevronRight, Megaphone, CheckCircle2, Wrench, 
+  Utensils, Calendar, AlertOctagon, Info, UtensilsCrossed, Zap, Settings, 
+  MessageSquare, CalendarPlus
 } from 'lucide-react';
 
 const initialNotifications = [
   {
     id: 1,
-    title: 'Fire Safety Drill - Tomorrow',
-    message: 'All students are requested to participate in the fire safety drill at 10:00 AM.',
-    date: '6 Oct 2026',
-    time: '10:00 AM',
-    type: 'Announcements',
-    tag: 'Emergency',
+    title: 'New Announcement',
+    message: 'Hostel Day Celebration is scheduled on 8th October 2025. Don\'t miss the games, music and cultural events!',
+    time: '2 hours ago',
     read: false,
-    icon: <Megaphone size={18} />,
-    iconColor: 'text-red-500',
-    iconBg: 'bg-red-50',
-    tagColor: 'text-red-600 bg-red-50'
+    type: 'Announcements',
+    iconType: 'announcement',
+    iconBg: 'bg-[#ffebe8]',
+    iconColor: 'text-[#f05252]',
   },
   {
     id: 2,
-    title: 'Water Supply Maintenance',
-    message: 'Water supply will be temporarily unavailable in North Block from 2 PM - 4 PM.',
-    date: '5 Oct 2026',
-    time: '2:00 PM',
-    type: 'Complaints',
-    tag: 'Maintenance',
+    title: 'Leave Request Approved',
+    message: 'Your leave request from 10th Oct 2025 to 12th Oct 2025 has been approved by the warden.',
+    time: '5 hours ago',
     read: false,
-    icon: <FileText size={18} />,
-    iconColor: 'text-blue-500',
-    iconBg: 'bg-blue-50',
-    tagColor: 'text-blue-600 bg-blue-50'
+    type: 'Leave',
+    iconType: 'leave',
+    iconBg: 'bg-[#e6f8f0]',
+    iconColor: 'text-[#10b981]',
   },
   {
     id: 3,
-    title: 'Hostel Day Celebration',
-    message: 'Join us for the Hostel Day celebrations with games, music and cultural activities.',
-    date: '8 Oct 2026',
-    time: '10:00 AM',
-    type: 'Announcements',
-    tag: 'Events',
+    title: 'Complaint Update',
+    message: 'Your complaint #CMP-012 (Water leakage in North Block) has been resolved.',
+    time: '1 day ago',
     read: false,
-    icon: <Calendar size={18} />,
-    iconColor: 'text-purple-500',
-    iconBg: 'bg-purple-50',
-    tagColor: 'text-purple-600 bg-purple-50'
+    type: 'Complaint',
+    iconType: 'complaint',
+    iconBg: 'bg-[#fff8e6]',
+    iconColor: 'text-[#f59e0b]',
   },
   {
     id: 4,
     title: 'Mess Menu Update',
-    message: 'Special dinner menu will be served this Friday.',
-    date: '7 Oct 2026',
-    time: '7:00 PM',
+    message: 'Special dinner menu will be served this Friday. Check the mess menu for details.',
+    time: '1 day ago',
+    read: true,
     type: 'Mess',
-    tag: 'Food',
-    read: false,
-    icon: <Utensils size={18} />,
-    iconColor: 'text-green-500',
-    iconBg: 'bg-green-50',
-    tagColor: 'text-green-600 bg-green-50'
+    iconType: 'mess',
+    iconBg: 'bg-[#ebf4ff]',
+    iconColor: 'text-[#2563eb]',
   },
   {
     id: 5,
-    title: 'AC Maintenance in North Block',
-    message: 'AC maintenance will be done in all rooms of North Block from 1st October 2025.',
-    date: '1 Oct 2026',
-    time: '11:00 AM',
-    type: 'Complaints',
-    tag: 'Maintenance',
+    title: 'Event Reminder',
+    message: 'Inter-Hostel Sports will be held on 12th October 2025 at College Ground. Register now!',
+    time: '2 days ago',
     read: true,
-    icon: <AlertCircle size={18} />,
-    iconColor: 'text-red-500',
-    iconBg: 'bg-red-50',
-    tagColor: 'text-blue-600 bg-blue-50'
+    type: 'Announcements',
+    iconType: 'event',
+    iconBg: 'bg-[#f4ecfc]',
+    iconColor: 'text-[#9333ea]',
   },
   {
     id: 6,
-    title: 'System Update',
-    message: 'HostelHub app will be under maintenance on 30th September 2025 from 10 PM - 12 AM.',
-    date: '30 Sep 2026',
-    time: '10:00 PM',
-    type: 'System',
-    tag: 'System',
+    title: 'Emergency Notice',
+    message: 'Power shutdown will be carried out in Block B from 10:00 AM to 12:00 PM on 6th October 2025.',
+    time: '2 days ago',
     read: true,
-    icon: <Info size={18} />,
-    iconColor: 'text-blue-500',
-    iconBg: 'bg-blue-50',
-    tagColor: 'text-slate-600 bg-slate-100'
+    type: 'Emergency',
+    iconType: 'emergency',
+    iconBg: 'bg-[#fee2e2]',
+    iconColor: 'text-[#ef4444]',
   },
   {
     id: 7,
-    title: 'Inter-Hostel Sports',
-    message: 'Registration for inter-hostel sports is now open. Last date: 10th October 2025.',
-    date: '28 Sep 2026',
-    time: '4:00 PM',
-    type: 'Announcements',
-    tag: 'Events',
+    title: 'System Update',
+    message: 'The hostel management system will be under maintenance on 30th September 2025 from 10 PM to 12 AM.',
+    time: '3 days ago',
     read: true,
-    icon: <Calendar size={18} />,
-    iconColor: 'text-purple-500',
-    iconBg: 'bg-purple-50',
-    tagColor: 'text-purple-600 bg-purple-50'
+    type: 'System',
+    iconType: 'system',
+    iconBg: 'bg-[#ebf4ff]',
+    iconColor: 'text-[#2563eb]',
   },
   {
     id: 8,
-    title: 'Leave Request Approved',
-    message: 'Your leave request for weekend trip has been approved by the warden.',
-    date: '25 Sep 2026',
-    time: '10:30 AM',
-    type: 'Leave Requests',
-    tag: 'Approved',
+    title: 'Mess Committee',
+    message: 'Feedback form for mess quality is now available. Please share your suggestions.',
+    time: '3 days ago',
     read: true,
-    icon: <CheckCircle2 size={18} />,
-    iconColor: 'text-green-500',
-    iconBg: 'bg-green-50',
-    tagColor: 'text-green-600 bg-green-50'
+    type: 'Mess',
+    iconType: 'committee',
+    iconBg: 'bg-[#ecfdf5]',
+    iconColor: 'text-[#10b981]',
   }
-];
-
-const categories = [
-  { id: 'All', label: 'All', count: 8 },
-  { id: 'Announcements', label: 'Announcements', count: 3 },
-  { id: 'Complaints', label: 'Complaints', count: 2 },
-  { id: 'Leave Requests', label: 'Leave Requests', count: 1 },
-  { id: 'Mess', label: 'Mess', count: 1 },
-  { id: 'System', label: 'System', count: 1 },
 ];
 
 const StudentNotifications = () => {
   const [activeTab, setActiveTab] = useState('All');
   const [notifications, setNotifications] = useState(initialNotifications);
 
+  const unreadCount = notifications.filter(n => !n.read).length;
+  const readCount = notifications.filter(n => n.read).length;
+  const totalCount = notifications.length;
+
   const markAllAsRead = () => {
     setNotifications(notifications.map(n => ({ ...n, read: true })));
   };
 
-  const filteredNotifications = notifications.filter(
-    n => activeTab === 'All' || n.type === activeTab
-  );
+  const toggleReadStatus = (id) => {
+    setNotifications(notifications.map(n => 
+      n.id === id ? { ...n, read: !n.read } : n
+    ));
+  };
+
+  const filteredNotifications = notifications.filter(n => {
+    if (activeTab === 'Unread') return !n.read;
+    if (activeTab === 'Read') return n.read;
+    return true;
+  });
+
+  const renderIcon = (type) => {
+    switch (type) {
+      case 'announcement':
+        return <Megaphone size={20} className="stroke-[2.2]" />;
+      case 'leave':
+        return <CheckCircle2 size={20} className="stroke-[2.2]" />;
+      case 'complaint':
+        return <Wrench size={20} className="stroke-[2.2]" />;
+      case 'mess':
+        return <Utensils size={20} className="stroke-[2.2]" />;
+      case 'event':
+        return <Calendar size={20} className="stroke-[2.2]" />;
+      case 'emergency':
+        return <AlertOctagon size={20} className="stroke-[2.2]" />;
+      case 'system':
+        return <Info size={20} className="stroke-[2.2]" />;
+      case 'committee':
+        return <UtensilsCrossed size={20} className="stroke-[2.2]" />;
+      default:
+        return <Bell size={20} className="stroke-[2.2]" />;
+    }
+  };
 
   return (
-    <div className="flex flex-col xl:flex-row gap-6 max-w-7xl mx-auto pb-10 font-sans relative">
+    <div className="flex flex-col xl:flex-row gap-6 max-w-7xl mx-auto pb-12 font-sans">
       
       {/* LEFT MAIN CONTENT */}
-      <div className="flex-1 space-y-6 min-w-0">
+      <div className="flex-1 space-y-5 min-w-0">
         
-        {/* Header */}
-        <div className="bg-[#eff4ff] rounded-2xl p-6 relative overflow-hidden flex items-center justify-between border border-blue-100/50">
-          <div className="flex items-center gap-4 relative z-10">
-            <div className="bg-[#2563EB] text-white p-4 rounded-full shadow-sm">
-              <Bell size={28} className="fill-current" />
+        {/* Banner Header */}
+        <div className="bg-[#edf4ff] rounded-[22px] px-7 py-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between border border-blue-100/70 shadow-sm">
+          {/* Left Title & Icon */}
+          <div className="flex items-center gap-4 relative z-10 w-full md:w-auto">
+            <div className="w-14 h-14 rounded-full bg-[#1a6cf0] flex items-center justify-center text-white shadow-md shadow-blue-500/25 shrink-0">
+              <Bell size={26} className="fill-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-800 tracking-tight mb-1">Notifications</h1>
-              <p className="text-slate-500 text-sm">Stay updated with your latest activities and important updates.</p>
+              <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Notifications</h1>
+              <p className="text-slate-500 text-[13px] mt-0.5">Stay updated with your latest activities and important updates.</p>
             </div>
           </div>
-          
-          {/* Header Graphic */}
-          <div className="relative z-10 flex items-center pr-4 hidden sm:flex">
-             {/* Small Updates Text */}
-             <div className="mr-6 transform -rotate-12">
-               <p className="text-blue-600 font-bold text-sm tracking-tight leading-tight">Small</p>
-               <p className="text-blue-600 font-bold text-sm tracking-tight leading-tight">updates make</p>
-               <p className="text-blue-600 font-bold text-sm tracking-tight leading-tight flex items-center gap-1">a big difference! <span className="text-blue-500 text-xs">♥</span></p>
-             </div>
 
-            {/* Illustration via SVG */}
-            <div className="relative w-40 h-28 flex items-center justify-center">
-               <svg viewBox="0 0 160 120" className="w-full h-full">
-                 {/* Leaves Background */}
-                 <path d="M10 80 C0 60 20 50 30 70 Z" fill="#93c5fd" />
-                 <path d="M20 90 C10 70 30 60 40 80 Z" fill="#60a5fa" />
-                 <path d="M140 50 C150 70 130 80 120 60 Z" fill="#93c5fd" />
-                 <path d="M130 40 C140 60 120 70 110 50 Z" fill="#60a5fa" />
-                 <path d="M120 90 C140 100 150 80 130 70 Z" fill="#bfdbfe" />
-                 <path d="M140 110 C160 120 170 100 150 90 Z" fill="#93c5fd" />
-                 
-                 {/* Floating Bells */}
-                 <path d="M40 30 C35 30 35 40 40 40 L45 40 C50 40 50 30 45 30 Z" fill="#93c5fd" transform="rotate(-15 42 35)" />
-                 <circle cx="42" cy="42" r="2" fill="#93c5fd" />
-                 
-                 <path d="M110 20 C105 20 105 30 110 30 L115 30 C120 30 120 20 115 20 Z" fill="#2563eb" transform="rotate(15 112 25)" />
-                 <circle cx="112" cy="32" r="2" fill="#2563eb" />
+          {/* Right Illustration & Hand-Lettered Text */}
+          <div className="relative z-10 hidden md:flex items-center gap-4 mt-4 md:mt-0 select-none">
+            {/* Tilted Callout Text */}
+            <div className="transform -rotate-6 text-right leading-tight pr-1">
+              <span className="block text-[#1a6cf0] font-bold text-sm tracking-tight">Stay</span>
+              <span className="block text-[#1a6cf0] font-bold text-sm tracking-tight">Informed,</span>
+              <span className="block text-[#1a6cf0] font-bold text-sm tracking-tight whitespace-nowrap">
+                Stay Ahead! <span className="text-xs">♥</span>
+              </span>
+            </div>
 
-                 {/* Person/Girl */}
-                 <path d="M65 120 C65 90 95 90 95 120 Z" fill="#3b82f6" />
-                 {/* Hair back */}
-                 <path d="M70 55 C65 70 65 90 75 90 C85 90 95 70 90 55 Z" fill="#1e3a8a" />
-                 {/* Face */}
-                 <circle cx="80" cy="55" r="12" fill="#fbcfe8" />
-                 {/* Hair front */}
-                 <path d="M70 55 C70 45 90 45 90 55 C90 48 70 48 70 55 Z" fill="#1e3a8a" />
-                 {/* Phone */}
-                 <rect x="68" y="75" width="8" height="14" rx="2" fill="#60a5fa" transform="rotate(-15 72 82)" />
-                 {/* Arm */}
-                 <path d="M85 85 C75 90 70 85 70 80" fill="none" stroke="#fbcfe8" strokeWidth="4" strokeLinecap="round" />
-               </svg>
+            {/* Illustration Graphic */}
+            <div className="w-44 h-28 relative flex items-center justify-center">
+              <svg viewBox="0 0 180 120" className="w-full h-full overflow-visible">
+                {/* Botanical leaves / background shapes */}
+                <path d="M10,95 C-5,65 20,40 38,65 C48,78 30,105 10,95 Z" fill="#93c5fd" opacity="0.75" />
+                <path d="M25,110 C15,80 45,65 55,90 C60,105 40,118 25,110 Z" fill="#60a5fa" opacity="0.65" />
+                <path d="M140,55 C160,35 175,65 160,85 C148,100 130,75 140,55 Z" fill="#93c5fd" opacity="0.8" />
+                <path d="M152,75 C175,70 178,105 158,110 C145,112 140,90 152,75 Z" fill="#60a5fa" opacity="0.7" />
+                <path d="M130,95 C145,85 160,105 145,118 C135,125 125,105 130,95 Z" fill="#bfdbfe" opacity="0.8" />
+                
+                {/* Floating Ringing Bell 1 */}
+                <g transform="translate(48, 18) rotate(-15)">
+                  <path d="M12,4 C7,4 6,10 6,14 L4,17 L20,17 L18,14 C18,10 17,4 12,4 Z" fill="#1a6cf0" />
+                  <circle cx="12" cy="19" r="2" fill="#1a6cf0" />
+                  <path d="M12,1 C11,1 10,2 10,3 L14,3 C14,2 13,1 12,1 Z" fill="#1a6cf0" />
+                  {/* Motion waves */}
+                  <path d="M0,10 C-2,13 -2,17 0,20" stroke="#60a5fa" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                  <path d="M24,10 C26,13 26,17 24,20" stroke="#60a5fa" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                </g>
+
+                {/* Floating Ringing Bell 2 (smaller) */}
+                <g transform="translate(132, 12) rotate(12)">
+                  <path d="M9,3 C5,3 4,7 4,11 L3,13 L15,13 L14,11 C14,7 13,3 9,3 Z" fill="#3b82f6" opacity="0.85" />
+                  <circle cx="9" cy="15" r="1.5" fill="#3b82f6" />
+                </g>
+
+                {/* Girl Illustration */}
+                <g transform="translate(85, 22)">
+                  {/* Long dark hair behind */}
+                  <path d="M12,24 C8,38 4,55 9,68 C16,70 24,70 28,68 C34,55 30,38 26,24 Z" fill="#1e293b" />
+                  
+                  {/* Body / Royal blue dress */}
+                  <path d="M-2,66 C5,58 32,58 38,66 L42,100 L-6,100 Z" fill="#1a6cf0" />
+
+                  {/* Neck */}
+                  <rect x="14" y="32" width="8" height="12" fill="#fbcfe8" rx="2" />
+
+                  {/* Face */}
+                  <ellipse cx="18" cy="24" rx="10" ry="12" fill="#fbcfe8" />
+                  
+                  {/* Front Hair / Bangs */}
+                  <path d="M8,22 C11,12 25,12 28,22 C24,17 18,17 14,21 Z" fill="#0f172a" />
+                  <path d="M8,20 C6,27 6,34 9,38 C9,30 11,25 11,22 Z" fill="#0f172a" />
+                  <path d="M28,20 C30,27 30,34 27,38 C27,30 25,25 25,22 Z" fill="#0f172a" />
+
+                  {/* Smile & Eyes */}
+                  <circle cx="14" cy="23" r="1" fill="#0f172a" />
+                  <circle cx="22" cy="23" r="1" fill="#0f172a" />
+                  <path d="M16,27 Q18,30 20,27" stroke="#0f172a" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+
+                  {/* Arms holding smartphone */}
+                  {/* Left arm */}
+                  <path d="M4,66 C-1,72 -2,82 6,86" stroke="#fbcfe8" strokeWidth="4" strokeLinecap="round" fill="none" />
+                  {/* Right arm */}
+                  <path d="M32,66 C36,72 37,82 28,86" stroke="#fbcfe8" strokeWidth="4" strokeLinecap="round" fill="none" />
+
+                  {/* Smartphone */}
+                  <rect x="10" y="70" width="16" height="25" rx="3" fill="#1e40af" stroke="#93c5fd" strokeWidth="1" />
+                  <rect x="12" y="73" width="12" height="18" rx="1.5" fill="#60a5fa" />
+                  {/* Hands holding phone */}
+                  <circle cx="9" cy="83" r="3" fill="#fbcfe8" />
+                  <circle cx="27" cy="83" r="3" fill="#fbcfe8" />
+                </g>
+              </svg>
             </div>
           </div>
-          
-          {/* Background decorations */}
-          <div className="absolute top-0 right-0 w-80 h-full bg-blue-100/30 -skew-x-12 translate-x-10 pointer-events-none"></div>
+
+          {/* Background subtle radial gradient */}
+          <div className="absolute right-0 top-0 bottom-0 w-80 bg-gradient-to-l from-blue-200/25 to-transparent pointer-events-none rounded-r-[22px]"></div>
         </div>
 
-        {/* Filters and Mark all read */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
-             {categories.map((cat) => (
-               <button
-                 key={cat.id}
-                 onClick={() => setActiveTab(cat.id)}
-                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap border ${
-                   activeTab === cat.id
-                     ? 'bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-200'
-                     : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                 }`}
-               >
-                 {cat.label}
-                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                   activeTab === cat.id ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
-                 }`}>
-                   {cat.count}
-                 </span>
-               </button>
-             ))}
+        {/* Filters and Mark all as read */}
+        <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center gap-2.5">
+            {/* Filter: All */}
+            <button
+              onClick={() => setActiveTab('All')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
+                activeTab === 'All'
+                  ? 'bg-[#1a6cf0] text-white shadow-sm shadow-blue-300'
+                  : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90'
+              }`}
+            >
+              All
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                activeTab === 'All' ? 'bg-[#0f54c9] text-white' : 'bg-slate-100 text-slate-500'
+              }`}>
+                {totalCount}
+              </span>
+            </button>
+
+            {/* Filter: Unread */}
+            <button
+              onClick={() => setActiveTab('Unread')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
+                activeTab === 'Unread'
+                  ? 'bg-[#1a6cf0] text-white shadow-sm shadow-blue-300'
+                  : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90'
+              }`}
+            >
+              Unread
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                activeTab === 'Unread' ? 'bg-[#0f54c9] text-white' : 'bg-[#e8f1ff] text-[#1a6cf0]'
+              }`}>
+                {unreadCount}
+              </span>
+            </button>
+
+            {/* Filter: Read */}
+            <button
+              onClick={() => setActiveTab('Read')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
+                activeTab === 'Read'
+                  ? 'bg-[#1a6cf0] text-white shadow-sm shadow-blue-300'
+                  : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90'
+              }`}
+            >
+              Read
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                activeTab === 'Read' ? 'bg-[#0f54c9] text-white' : 'bg-slate-100 text-slate-500'
+              }`}>
+                {readCount}
+              </span>
+            </button>
           </div>
 
-          <button 
+          {/* Mark all as read Button */}
+          <button
             onClick={markAllAsRead}
-            className="flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-bold text-sm shrink-0 transition-colors"
+            className="flex items-center gap-1.5 text-[#1a6cf0] hover:text-blue-700 font-semibold text-sm transition-colors cursor-pointer select-none"
           >
-            <Check size={16} /> Mark all as read
+            <Check size={16} strokeWidth={2.5} />
+            <span>Mark all as read</span>
           </button>
         </div>
 
-        {/* Notification List */}
-        <div className="space-y-3">
+        {/* Notifications List */}
+        <div className="space-y-3 pt-1">
           {filteredNotifications.map((notif) => (
-            <div 
-              key={notif.id} 
-              className={`bg-white rounded-2xl border ${notif.read ? 'border-slate-100' : 'border-blue-100 shadow-sm'} p-4 flex gap-4 cursor-pointer hover:border-blue-200 transition-colors group`}
+            <div
+              key={notif.id}
+              onClick={() => toggleReadStatus(notif.id)}
+              className="bg-white rounded-[18px] border border-slate-100 hover:border-blue-200 hover:shadow-md p-4 sm:px-5 sm:py-4.5 flex items-center justify-between gap-4 transition-all duration-200 cursor-pointer group shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
             >
-              {/* Icon */}
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${notif.iconBg} ${notif.iconColor}`}>
-                {notif.icon}
+              {/* Left Circle Icon */}
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${notif.iconBg} ${notif.iconColor} group-hover:scale-105 transition-transform`}>
+                {renderIcon(notif.iconType)}
               </div>
 
-              {/* Content */}
+              {/* Middle Text Details */}
               <div className="flex-1 min-w-0">
-                 <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 className={`font-bold truncate text-sm ${notif.read ? 'text-slate-700' : 'text-slate-900'}`}>
-                      {notif.title}
-                    </h3>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${notif.tagColor}`}>
-                      {notif.tag}
-                    </span>
-                 </div>
-                 <p className="text-xs text-slate-600 line-clamp-2 mb-2 leading-relaxed">
-                   {notif.message}
-                 </p>
-                 <div className="flex items-center gap-3 text-[11px] text-slate-400 font-medium">
-                    <div className="flex items-center gap-1.5"><Calendar size={12} /> {notif.date}</div>
-                    <div className="w-1 h-1 rounded-full bg-slate-300"></div>
-                    <div>{notif.time}</div>
-                 </div>
+                <h3 className="text-[15px] font-bold text-slate-800 leading-snug">
+                  {notif.title}
+                </h3>
+                <p className="text-[13px] text-slate-500 mt-1 leading-relaxed line-clamp-2 font-normal">
+                  {notif.message}
+                </p>
+                <div className="flex items-center gap-1.5 text-[12px] text-slate-400 mt-2 font-medium">
+                  <Clock size={13} className="text-slate-400" />
+                  <span>{notif.time}</span>
+                </div>
               </div>
 
-              {/* Status Dot & Chevron */}
-              <div className="flex flex-col items-center justify-center gap-2 pl-2">
-                 <div className={`w-2.5 h-2.5 rounded-full ${notif.read ? 'bg-slate-200' : 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.5)]'}`}></div>
-                 <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
+              {/* Right Status Pill & Arrow */}
+              <div className="flex items-center gap-3 shrink-0">
+                {!notif.read ? (
+                  <span className="bg-[#e8f1ff] text-[#1a6cf0] text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#1a6cf0]"></span>
+                    Unread
+                  </span>
+                ) : (
+                  <span className="bg-[#f1f5f9] text-[#64748b] text-xs font-semibold px-3 py-1 rounded-full">
+                    Read
+                  </span>
+                )}
+                <ChevronRight size={18} className="text-blue-500/70 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
               </div>
             </div>
           ))}
 
           {filteredNotifications.length === 0 && (
-             <div className="py-12 flex flex-col items-center justify-center text-center bg-white rounded-2xl border border-slate-100 border-dashed">
-                <div className="bg-slate-50 text-slate-300 p-4 rounded-full mb-3">
-                   <Bell size={24} />
-                </div>
-                <h3 className="font-bold text-slate-700 text-sm mb-1">No matching notifications</h3>
-                <p className="text-[11px] text-slate-400 font-medium">Try changing your filters.</p>
-             </div>
+            <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400">
+              <Bell size={36} className="mx-auto mb-3 text-slate-300" />
+              <p className="font-semibold text-slate-600">No notifications found</p>
+              <p className="text-xs text-slate-400 mt-1">There are no notifications in this category.</p>
+            </div>
           )}
         </div>
-
-        {/* All Caught Up Indicator */}
-        {filteredNotifications.length > 0 && (
-          <div className="py-8 flex flex-col items-center justify-center text-center animate-in fade-in duration-700">
-             <div className="relative mb-3">
-                <div className="bg-blue-50 text-blue-500 p-3 rounded-full">
-                   <Bell size={20} />
-                </div>
-                <div className="absolute -top-1 -right-1 text-blue-300"><SparklesIcon /></div>
-                <div className="absolute bottom-0 -left-2 text-blue-300"><SparklesIcon size={12} /></div>
-             </div>
-             <h3 className="font-bold text-blue-600 text-sm mb-1">You're all caught up!</h3>
-             <p className="text-[11px] text-slate-500 font-medium">No more notifications at the moment.</p>
-          </div>
-        )}
 
       </div>
 
       {/* RIGHT SIDEBAR */}
-      <div className="w-full xl:w-80 space-y-6 shrink-0">
+      <div className="w-full xl:w-[310px] space-y-5 shrink-0">
         
-        {/* Notification Summary */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-           <div className="flex items-center gap-2 mb-5">
-             <div className="text-blue-600"><Bell size={16} className="fill-current" /></div>
-             <h3 className="font-bold text-slate-800 text-sm">Notification Summary</h3>
-           </div>
-           
-           <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-center justify-center text-center border border-slate-100">
-                 <div className="flex items-center gap-2 mb-1">
-                    <div className="bg-blue-100 text-blue-600 p-1 rounded-md"><Bell size={14} className="fill-current" /></div>
-                    <span className="text-xl font-bold text-slate-800">8</span>
-                 </div>
-                 <p className="text-[10px] text-slate-500 font-medium leading-tight mt-1">Total<br/>Notifications</p>
-              </div>
-              
-              <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-center justify-center text-center border border-slate-100">
-                 <div className="flex items-center gap-2 mb-1">
-                    <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center"><div className="w-2 h-2 rounded-full bg-blue-600"></div></div>
-                    <span className="text-xl font-bold text-slate-800">3</span>
-                 </div>
-                 <p className="text-[10px] text-slate-500 font-medium leading-tight mt-1">Unread</p>
-              </div>
+        {/* Card 1: Notification Summary */}
+        <div className="bg-white rounded-[20px] p-5 border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center gap-2 mb-4">
+            <Bell size={18} className="text-[#1a6cf0] fill-[#1a6cf0]" />
+            <h3 className="font-bold text-slate-800 text-[15px]">Notification Summary</h3>
+          </div>
 
-              <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-center justify-center text-center border border-slate-100">
-                 <div className="flex items-center gap-2 mb-1">
-                    <div className="bg-green-100 text-green-600 p-1 rounded-full"><Check size={14} strokeWidth={3} /></div>
-                    <span className="text-xl font-bold text-slate-800">5</span>
-                 </div>
-                 <p className="text-[10px] text-slate-500 font-medium leading-tight mt-1">Read</p>
+          <div className="grid grid-cols-2 gap-3">
+            {/* Unread */}
+            <div className="bg-[#f8fafd] rounded-xl p-3.5 border border-slate-100/90 flex flex-col justify-center">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#1a6cf0]"></span>
+                <span className="text-xl font-bold text-slate-800">{unreadCount}</span>
               </div>
+              <span className="text-[12px] text-slate-400 font-medium mt-1">Unread</span>
+            </div>
 
-              <div className="bg-slate-50 rounded-xl p-4 flex flex-col items-center justify-center text-center border border-slate-100">
-                 <div className="flex items-center gap-2 mb-1">
-                    <div className="bg-blue-100 text-blue-600 p-1 rounded-md"><Calendar size={14} /></div>
-                    <span className="text-xl font-bold text-slate-800">2</span>
-                 </div>
-                 <p className="text-[10px] text-slate-500 font-medium leading-tight mt-1">Today</p>
+            {/* Read */}
+            <div className="bg-[#f8fafd] rounded-xl p-3.5 border border-slate-100/90 flex flex-col justify-center">
+              <div className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 flex items-center justify-center">
+                  <span className="w-1 h-1 rounded-full bg-slate-400"></span>
+                </span>
+                <span className="text-xl font-bold text-slate-800">{readCount}</span>
               </div>
-           </div>
+              <span className="text-[12px] text-slate-400 font-medium mt-1">Read</span>
+            </div>
+
+            {/* Announcements */}
+            <div className="bg-[#f8fafd] rounded-xl p-3.5 border border-slate-100/90 flex flex-col justify-center">
+              <div className="flex items-center gap-2">
+                <Megaphone size={16} className="text-[#1a6cf0]" />
+                <span className="text-xl font-bold text-slate-800">4</span>
+              </div>
+              <span className="text-[12px] text-slate-400 font-medium mt-1">Announcements</span>
+            </div>
+
+            {/* System Updates */}
+            <div className="bg-[#f8fafd] rounded-xl p-3.5 border border-slate-100/90 flex flex-col justify-center">
+              <div className="flex items-center gap-2">
+                <Settings size={16} className="text-[#1a6cf0]" />
+                <span className="text-xl font-bold text-slate-800">2</span>
+              </div>
+              <span className="text-[12px] text-slate-400 font-medium mt-1">System Updates</span>
+            </div>
+          </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-           <div className="flex items-center gap-2 mb-5">
-             <div className="text-blue-600"><ZapIcon /></div>
-             <h3 className="font-bold text-slate-800 text-sm">Quick Actions</h3>
-           </div>
+        {/* Card 2: Quick Actions */}
+        <div className="bg-white rounded-[20px] p-5 border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center gap-2 mb-4">
+            <Zap size={18} className="text-[#1a6cf0] fill-[#1a6cf0]" />
+            <h3 className="font-bold text-slate-800 text-[15px]">Quick Actions</h3>
+          </div>
 
-           <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 border border-slate-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 group cursor-pointer transition-colors">
-                 <div className="flex items-center gap-3">
-                    <div className="bg-blue-50 text-blue-500 p-2 rounded-lg"><FileText size={16} /></div>
-                    <div>
-                      <h4 className="text-[12px] font-bold text-slate-700 group-hover:text-blue-700 transition-colors">View All Announcements</h4>
-                      <p className="text-[10px] text-slate-500">Check latest hostel updates</p>
-                    </div>
-                 </div>
-                 <ChevronRight size={14} className="text-slate-300 group-hover:text-blue-500" />
+          <div className="space-y-2.5">
+            {/* Action 1 */}
+            <Link
+              to="/student/announcements"
+              className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#ebf4ff] flex items-center justify-center text-[#1a6cf0] shrink-0 group-hover:scale-105 transition-transform">
+                  <Megaphone size={18} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-bold text-slate-800 group-hover:text-[#1a6cf0] transition-colors leading-tight">
+                    View All Announcements
+                  </h4>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Check latest hostel updates</p>
+                </div>
               </div>
+              <ChevronRight size={16} className="text-blue-500/70 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-              <div className="flex items-center justify-between p-3 border border-slate-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 group cursor-pointer transition-colors">
-                 <div className="flex items-center gap-3">
-                    <div className="bg-blue-50 text-blue-500 p-2 rounded-lg"><MessageSquare size={16} /></div>
-                    <div>
-                      <h4 className="text-[12px] font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Report a Complaint</h4>
-                      <p className="text-[10px] text-slate-500">Log a new complaint</p>
-                    </div>
-                 </div>
-                 <ChevronRight size={14} className="text-slate-300 group-hover:text-blue-500" />
+            {/* Action 2 */}
+            <Link
+              to="/student/complaints"
+              className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#ebf4ff] flex items-center justify-center text-[#1a6cf0] shrink-0 group-hover:scale-105 transition-transform">
+                  <MessageSquare size={18} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-bold text-slate-800 group-hover:text-[#1a6cf0] transition-colors leading-tight">
+                    Report a Complaint
+                  </h4>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Log a new complaint</p>
+                </div>
               </div>
+              <ChevronRight size={16} className="text-blue-500/70 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-              <div className="flex items-center justify-between p-3 border border-slate-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 group cursor-pointer transition-colors">
-                 <div className="flex items-center gap-3">
-                    <div className="bg-blue-50 text-blue-500 p-2 rounded-lg"><Briefcase size={16} /></div>
-                    <div>
-                      <h4 className="text-[12px] font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Apply for Leave</h4>
-                      <p className="text-[10px] text-slate-500">Submit a leave request</p>
-                    </div>
-                 </div>
-                 <ChevronRight size={14} className="text-slate-300 group-hover:text-blue-500" />
+            {/* Action 3 */}
+            <Link
+              to="/student/leaves"
+              className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#ebf4ff] flex items-center justify-center text-[#1a6cf0] shrink-0 group-hover:scale-105 transition-transform">
+                  <CalendarPlus size={18} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-bold text-slate-800 group-hover:text-[#1a6cf0] transition-colors leading-tight">
+                    Apply for Leave
+                  </h4>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Submit a leave request</p>
+                </div>
               </div>
+              <ChevronRight size={16} className="text-blue-500/70 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-              <div className="flex items-center justify-between p-3 border border-slate-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 group cursor-pointer transition-colors">
-                 <div className="flex items-center gap-3">
-                    <div className="bg-blue-50 text-blue-500 p-2 rounded-lg"><Utensils size={16} /></div>
-                    <div>
-                      <h4 className="text-[12px] font-bold text-slate-700 group-hover:text-blue-700 transition-colors">View Mess Menu</h4>
-                      <p className="text-[10px] text-slate-500">Check today's menu</p>
-                    </div>
-                 </div>
-                 <ChevronRight size={14} className="text-slate-300 group-hover:text-blue-500" />
+            {/* Action 4 */}
+            <Link
+              to="/student/menu"
+              className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#ebf4ff] flex items-center justify-center text-[#1a6cf0] shrink-0 group-hover:scale-105 transition-transform">
+                  <Utensils size={18} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-bold text-slate-800 group-hover:text-[#1a6cf0] transition-colors leading-tight">
+                    View Mess Menu
+                  </h4>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Check today's menu</p>
+                </div>
               </div>
-           </div>
+              <ChevronRight size={16} className="text-blue-500/70 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+            </Link>
+          </div>
         </div>
 
-        {/* Bottom Banner */}
-        <div className="bg-[#eff4ff] rounded-2xl p-5 border border-blue-100 relative overflow-hidden flex items-center justify-center min-h-[100px]">
-           <div className="relative z-10 flex items-center gap-3">
-              <div className="text-blue-500 transform -rotate-12">
-                 <Send size={24} className="fill-current" />
-              </div>
-              <div className="text-center transform -rotate-6">
-                 <p className="text-blue-600 font-bold text-sm">Stay informed,</p>
-                 <p className="text-blue-600 font-bold text-sm">stay connected!</p>
-              </div>
-           </div>
-           
-           {/* Background Leaves */}
-           <div className="absolute top-0 right-0 w-16 h-16 opacity-50 transform translate-x-4 -translate-y-4">
-              <svg viewBox="0 0 100 100" fill="#93c5fd">
-                 <path d="M50 50 C20 20 80 0 100 0 C100 20 80 80 50 50 Z" />
-                 <path d="M50 50 C80 80 100 20 100 0 C80 0 20 20 50 50 Z" fill="#60a5fa" />
-              </svg>
-           </div>
-           <div className="absolute bottom-0 right-0 w-12 h-12 opacity-50 transform translate-x-2 translate-y-2">
-              <svg viewBox="0 0 100 100" fill="#bfdbfe">
-                 <path d="M0 100 C20 70 80 80 100 100 Z" />
-                 <path d="M100 100 C70 80 80 20 100 0 Z" fill="#93c5fd" />
-              </svg>
-           </div>
+        {/* Card 3: "Every Notification Matters! ♥" Decorative Card */}
+        <div className="bg-gradient-to-r from-[#eff6ff] via-[#edf5ff] to-[#e8f2ff] rounded-[20px] p-5 border border-blue-100/70 relative overflow-hidden flex items-center justify-between select-none shadow-sm min-h-[96px]">
+          {/* Ringing Bell Graphic */}
+          <div className="relative z-10 shrink-0 transform -rotate-12">
+            <div className="relative">
+              <Bell size={34} className="text-[#1a6cf0] fill-[#1a6cf0]" />
+              {/* Sound sparkle waves */}
+              <span className="absolute -top-1 -left-2 text-[#60a5fa] font-bold text-xs select-none">~</span>
+              <span className="absolute top-2 -left-2.5 text-[#93c5fd] font-bold text-xs select-none">~</span>
+              <span className="absolute -bottom-0.5 -right-2 text-[#60a5fa] font-bold text-xs select-none">~</span>
+            </div>
+          </div>
+
+          {/* Whimsical Text */}
+          <div className="relative z-10 text-center px-2 flex-1">
+            <span className="block text-[#1a6cf0] font-bold text-[13px] tracking-tight leading-tight">
+              Every
+            </span>
+            <span className="block text-[#1a6cf0] font-bold text-[13px] tracking-tight leading-tight">
+              Notification
+            </span>
+            <span className="block text-[#1a6cf0] font-bold text-[13px] tracking-tight leading-tight">
+              Matters! <span className="text-[11px]">♥</span>
+            </span>
+          </div>
+
+          {/* Decorative Leaves / Botanical Artwork */}
+          <div className="relative z-10 shrink-0 w-12 h-14">
+            <svg viewBox="0 0 60 70" className="w-full h-full">
+              <path d="M10,60 C20,40 35,25 55,20 C50,35 40,55 20,65 Z" fill="#60a5fa" opacity="0.8" />
+              <path d="M25,65 C35,50 45,40 58,40 C52,52 45,62 30,68 Z" fill="#93c5fd" opacity="0.9" />
+              <circle cx="15" cy="20" r="3" fill="#bfdbfe" />
+              <circle cx="48" cy="12" r="2" fill="#60a5fa" />
+            </svg>
+          </div>
+
+          {/* Soft background glow */}
+          <div className="absolute inset-0 bg-white/20 pointer-events-none"></div>
         </div>
 
       </div>
+
     </div>
   );
 };
-
-// Helper components for missing lucide icons if they don't have exactly what we want
-const SparklesIcon = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-  </svg>
-);
-
-const ZapIcon = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-  </svg>
-);
 
 export default StudentNotifications;

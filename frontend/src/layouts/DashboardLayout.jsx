@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { 
   Home, Users, Settings, LogOut, Menu, Bell, Search, X, MessageSquare, 
   Calendar, Building, BarChart2, BedDouble, Wrench, FileText, Utensils, 
-  Megaphone, User 
+  Megaphone, User, ChevronDown 
 } from 'lucide-react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -25,7 +25,7 @@ const DashboardLayout = () => {
           { label: 'Dashboard', icon: Home, path: '/student/dashboard' },
           { label: 'My Room', icon: BedDouble, path: '/student/room' },
           { label: 'My Complaints', icon: Wrench, path: '/student/complaints' },
-          { label: 'Leave Requests', icon: FileText, path: '/student/leaves', dot: true },
+          { label: 'Leave Requests', icon: FileText, path: '/student/leaves' },
           { label: 'Mess Menu', icon: Utensils, path: '/student/menu' },
           { label: 'Announcements', icon: Megaphone, path: '/student/announcements' },
           { label: 'Lost & Found', icon: Search, path: '/student/lost-found' },
@@ -85,7 +85,7 @@ const DashboardLayout = () => {
         {user.role === 'student' && (
           <div className="flex flex-col items-center py-5 border-b border-white/10 shrink-0 mx-6">
             <img 
-              src="https://i.pravatar.cc/150?img=47" 
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" 
               alt="User" 
               className="w-16 h-16 rounded-full border-2 border-white/30 shadow-sm mb-3 object-cover" 
             />
@@ -134,18 +134,34 @@ const DashboardLayout = () => {
         {/* Bottom Graphic for Student */}
         {user.role === 'student' && (
           <div className="p-6 mt-auto shrink-0 flex flex-col items-center relative">
-            <div className="absolute bottom-0 left-0 right-0 h-32 opacity-20 pointer-events-none overflow-hidden">
-                <svg viewBox="0 0 200 100" className="absolute bottom-0 w-full h-full text-white fill-current">
-                   <path d="M20,100 L20,40 L60,40 L60,100 Z M80,100 L80,20 L120,20 L120,100 Z M140,100 L140,50 L180,50 L180,100 Z" opacity="0.5"/>
-                   <circle cx="30" cy="50" r="2" fill="#fff" />
-                   <circle cx="40" cy="50" r="2" fill="#fff" />
-                   <circle cx="50" cy="50" r="2" fill="#fff" />
-                   <circle cx="90" cy="30" r="2" fill="#fff" />
-                   <circle cx="100" cy="30" r="2" fill="#fff" />
-                   <circle cx="110" cy="30" r="2" fill="#fff" />
-                </svg>
+            <div className="absolute bottom-0 left-0 right-0 h-32 opacity-25 pointer-events-none overflow-hidden flex items-end justify-center">
+              <svg viewBox="0 0 240 120" className="w-full h-full text-white fill-current">
+                <rect x="20" y="55" width="30" height="65" rx="2" fill="currentColor" opacity="0.6"/>
+                <rect x="55" y="35" width="40" height="85" rx="2" fill="currentColor" opacity="0.8"/>
+                <rect x="100" y="60" width="32" height="60" rx="2" fill="currentColor" opacity="0.6"/>
+                <rect x="136" y="45" width="38" height="75" rx="2" fill="currentColor" opacity="0.8"/>
+                <rect x="180" y="65" width="35" height="55" rx="2" fill="currentColor" opacity="0.5"/>
+                <circle cx="32" cy="70" r="2" fill="#93c5fd" />
+                <circle cx="40" cy="70" r="2" fill="#93c5fd" />
+                <circle cx="32" cy="85" r="2" fill="#93c5fd" />
+                <circle cx="40" cy="85" r="2" fill="#93c5fd" />
+                <circle cx="68" cy="50" r="2" fill="#93c5fd" />
+                <circle cx="78" cy="50" r="2" fill="#93c5fd" />
+                <circle cx="68" cy="65" r="2" fill="#93c5fd" />
+                <circle cx="78" cy="65" r="2" fill="#93c5fd" />
+                <circle cx="68" cy="80" r="2" fill="#93c5fd" />
+                <circle cx="78" cy="80" r="2" fill="#93c5fd" />
+                <circle cx="148" cy="60" r="2" fill="#93c5fd" />
+                <circle cx="158" cy="60" r="2" fill="#93c5fd" />
+                <circle cx="148" cy="75" r="2" fill="#93c5fd" />
+                <circle cx="158" cy="75" r="2" fill="#93c5fd" />
+                <circle cx="15" cy="95" r="14" fill="currentColor" opacity="0.4" />
+                <circle cx="98" cy="92" r="12" fill="currentColor" opacity="0.4" />
+                <circle cx="178" cy="94" r="14" fill="currentColor" opacity="0.4" />
+              </svg>
             </div>
             <p className="text-white/80 text-[11px] font-semibold text-center mt-8 relative z-10">Your Hostel at a Glance</p>
+            <div className="w-8 h-1 bg-blue-300/80 rounded-full mt-2 relative z-10"></div>
           </div>
         )}
         
@@ -199,13 +215,16 @@ const DashboardLayout = () => {
             {/* User Profile */}
             <div className="flex items-center space-x-3 pl-2 cursor-pointer group">
               <img 
-                src="https://i.pravatar.cc/150?img=47" 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" 
                 alt="User" 
-                className="w-10 h-10 rounded-full object-cover border-2 border-transparent group-hover:border-blue-100 transition-colors" 
+                className="w-9 h-9 rounded-full object-cover border border-slate-200" 
               />
               <div className="hidden sm:block">
-                <p className="text-sm font-bold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors">{user.name || 'Sushmitha S'}</p>
-                <p className="text-[11px] font-semibold text-blue-600 leading-tight mt-0.5">Student</p>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-bold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors">{user.name || 'Sushmitha S'}</p>
+                  <ChevronDown size={14} className="text-slate-400 group-hover:text-slate-600 transition-colors" />
+                </div>
+                <span className="inline-block bg-blue-50 text-blue-600 text-[10px] font-semibold px-2 py-0.5 rounded-full mt-0.5">Student</span>
               </div>
             </div>
           </div>
