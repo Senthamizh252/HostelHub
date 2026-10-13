@@ -228,31 +228,7 @@ const StudentComplaints = () => {
               </div>
             </div>
             
-            {/* Header Graphic */}
-            <div className="relative z-10 flex items-center pr-4 hidden sm:flex">
-              <div className="text-blue-500 font-medium text-sm italic transform -rotate-12 mr-6 text-center leading-tight">
-                Better<br/>Facilities<br/>for a Better<br/>You! <Heart size={12} className="inline fill-current text-blue-500" />
-              </div>
-              
-              {/* Simple Illustration via CSS/SVG */}
-              <div className="relative w-32 h-24">
-                 <svg viewBox="0 0 120 100" className="w-full h-full">
-                    {/* Background shapes */}
-                    <circle cx="60" cy="50" r="40" fill="#dbeafe" opacity="0.6"/>
-                    <rect x="30" y="20" width="40" height="55" rx="4" fill="#bfdbfe" transform="rotate(-5 50 40)"/>
-                    <rect x="40" y="15" width="45" height="65" rx="4" fill="#ffffff" stroke="#3b82f6" strokeWidth="1.5"/>
-                    {/* Lines on paper */}
-                    <line x1="50" y1="30" x2="75" y2="30" stroke="#93c5fd" strokeWidth="2" strokeLinecap="round"/>
-                    <line x1="50" y1="40" x2="65" y2="40" stroke="#93c5fd" strokeWidth="2" strokeLinecap="round"/>
-                    <line x1="50" y1="50" x2="70" y2="50" stroke="#93c5fd" strokeWidth="2" strokeLinecap="round"/>
-                    {/* Wrench over paper */}
-                    <path d="M85 55 L70 70 M85 55 C88 52 87 48 84 46 C81 44 77 45 75 48 L80 52 L78 54 L73 50 M70 70 C68 72 65 72 63 70 C61 68 61 65 63 63 L70 70 Z" fill="#2563eb" stroke="#2563eb" strokeWidth="1.5" strokeLinejoin="round"/>
-                    {/* Leaves */}
-                    <path d="M25 60 C20 50 30 40 35 45 C35 55 30 65 25 60 Z" fill="#60a5fa"/>
-                    <path d="M20 70 C10 70 15 60 25 60 C30 60 30 70 20 70 Z" fill="#93c5fd"/>
-                 </svg>
-              </div>
-            </div>
+
             
             {/* Background decorations */}
             <div className="absolute top-0 right-0 w-64 h-full bg-blue-100/30 -skew-x-12 translate-x-10"></div>
