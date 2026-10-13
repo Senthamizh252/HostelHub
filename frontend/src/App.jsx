@@ -13,6 +13,7 @@ import StudentLostFound from './pages/student/LostFound';
 import StudentNotifications from './pages/student/Notifications';
 import StudentProfile from './pages/student/Profile';
 import WardenDashboard from './pages/warden/Dashboard';
+import WardenRooms from './pages/warden/Rooms';
 import AdminDashboard from './pages/admin/Dashboard';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -53,6 +54,7 @@ function AppRoutes() {
         <Route path="/student/profile" element={<ProtectedRoute allowedRoles={['student']}><StudentProfile /></ProtectedRoute>} />
         <Route path="/student/settings" element={<ProtectedRoute allowedRoles={['student']}><StudentProfile /></ProtectedRoute>} />
         <Route path="/warden/dashboard" element={<ProtectedRoute allowedRoles={['warden']}><WardenDashboard /></ProtectedRoute>} />
+        <Route path="/warden/rooms" element={<ProtectedRoute allowedRoles={['warden']}><WardenRooms /></ProtectedRoute>} />
         <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       </Route>
 
