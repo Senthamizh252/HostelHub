@@ -14,9 +14,9 @@
   }
   
   [data-theme="warden"] {
-    --color-primary: #7C3AED;
-    --color-primary-hover: #6D28D9;
-    --color-accent: #8B5CF6;
+    --color-primary: #0F7A6B;
+    --color-primary-hover: #0D6B5E;
+    --color-accent: #14B8A6;
   }
 
   [data-theme="admin"] {
