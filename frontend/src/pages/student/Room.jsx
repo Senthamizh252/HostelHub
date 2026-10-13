@@ -95,36 +95,7 @@ const StudentRoom = () => {
           </div>
         </div>
         
-        {/* Header Graphic */}
-        <div className="relative z-10 flex items-center pr-4 hidden sm:flex">
-          <div className="text-blue-500 font-medium text-sm italic transform -rotate-12 mr-8 text-center leading-tight">
-            Your room,<br/>your space<br/>Make it count! <Heart size={12} className="inline fill-current text-blue-500" />
-          </div>
-          
-          {/* Simple Room Illustration via CSS/SVG */}
-          <div className="relative w-40 h-24 flex items-end">
-             <svg viewBox="0 0 160 100" className="w-full h-full opacity-90">
-               {/* Wall/Window */}
-               <rect x="20" y="20" width="40" height="40" fill="#bfdbfe" rx="2" />
-               <line x1="40" y1="20" x2="40" y2="60" stroke="#eff4ff" strokeWidth="2" />
-               <line x1="20" y1="40" x2="60" y2="40" stroke="#eff4ff" strokeWidth="2" />
-               {/* Plant */}
-               <path d="M120 70 C110 50 130 40 130 70 Z" fill="#60a5fa" />
-               <path d="M130 70 C140 50 120 40 120 70 Z" fill="#93c5fd" />
-               <rect x="120" y="70" width="10" height="15" fill="#3b82f6" rx="1" />
-               {/* Lamp */}
-               <line x1="15" y1="85" x2="15" y2="45" stroke="#93c5fd" strokeWidth="2" />
-               <polygon points="10,45 20,45 15,35" fill="#3b82f6" />
-               <ellipse cx="15" cy="85" rx="5" ry="2" fill="#93c5fd" />
-               {/* Bed */}
-               <rect x="40" y="70" width="60" height="15" fill="#3b82f6" rx="2" />
-               <rect x="95" y="60" width="10" height="25" fill="#2563eb" rx="2" />
-               <rect x="45" y="65" width="20" height="10" fill="#bfdbfe" rx="2" />
-               {/* Floor line */}
-               <line x1="0" y1="85" x2="160" y2="85" stroke="#bfdbfe" strokeWidth="2" />
-             </svg>
-          </div>
-        </div>
+
         
         {/* Background decorations */}
         <div className="absolute top-0 right-0 w-80 h-full bg-blue-100/30 -skew-x-12 translate-x-10"></div>
