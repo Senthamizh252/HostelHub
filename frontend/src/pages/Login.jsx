@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import axios from '../lib/axios';
 import { Eye, EyeOff, Home, Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 
 const ROLES = [
@@ -58,34 +57,40 @@ export default function LoginPage() {
     setEmail(r.hint);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
     if (!email || !password) { setError('Please enter your email and password.'); return; }
+    if (password.length < 4) { setError('Password must be at least 4 characters.'); return; }
 
     setLoading(true);
-    try {
-      const res = await axios.post('/api/auth/login', { email, password });
-      const { token, user } = res.data;
 
-      // Enrich user with display name based on role
-      const displayNames = { student: 'Sushmitha S', warden: 'Dr. Priya Sharma', admin: 'Admin' };
-      const avatars = {
-        student: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300',
-        warden:  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300',
-        admin:   'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300',
-      };
+    // Mock users — no backend needed
+    const mockUsers = {
+      student: {
+        id: 1, role: 'student', name: 'Sushmitha S',
+        email: 'student@college.edu',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300',
+      },
+      warden: {
+        id: 2, role: 'warden', name: 'Dr. Priya Sharma',
+        email: 'warden@college.edu',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300',
+      },
+      admin: {
+        id: 3, role: 'admin', name: 'Admin',
+        email: 'admin@college.edu',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300',
+      },
+    };
 
-      login(
-        { ...user, name: displayNames[user.role] || user.name, avatar: avatars[user.role] },
-        token
-      );
-      navigate(`/${user.role}/dashboard`);
-    } catch (err) {
-      setError(err?.response?.data?.message || 'Login failed. Please try again.');
-    } finally {
+    // Simulate a short delay for UX
+    setTimeout(() => {
+      const user = mockUsers[selectedRole];
+      login(user, 'mock-token');
+      navigate(`/${selectedRole}/dashboard`);
       setLoading(false);
-    }
+    }, 600);
   };
 
   return (
