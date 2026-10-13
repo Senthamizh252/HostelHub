@@ -15,6 +15,7 @@ import StudentProfile from './pages/student/Profile';
 import WardenDashboard from './pages/warden/Dashboard';
 import WardenRooms from './pages/warden/Rooms';
 import WardenComplaints from './pages/warden/Complaints';
+import LeaveApprovals from './pages/warden/LeaveApprovals';
 import AdminDashboard from './pages/admin/Dashboard';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -57,6 +58,7 @@ function AppRoutes() {
         <Route path="/warden/dashboard" element={<ProtectedRoute allowedRoles={['warden']}><WardenDashboard /></ProtectedRoute>} />
         <Route path="/warden/rooms" element={<ProtectedRoute allowedRoles={['warden']}><WardenRooms /></ProtectedRoute>} />
         <Route path="/warden/complaints" element={<ProtectedRoute allowedRoles={['warden']}><WardenComplaints /></ProtectedRoute>} />
+        <Route path="/warden/leaves" element={<ProtectedRoute allowedRoles={['warden']}><LeaveApprovals /></ProtectedRoute>} />
         <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
       </Route>
 
